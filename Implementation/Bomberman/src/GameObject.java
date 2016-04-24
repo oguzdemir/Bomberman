@@ -1,28 +1,26 @@
 /**
- * Created by od on 23.4.2016.
+ * GameObject class that base for the many objects in the game.
+ *
+ * Created by Anıl Sert on 24.4.2016.
  */
 public abstract class GameObject implements Explodable
 {
-    int xPosition;
-    int yPosition;
+    // Local Variables
+    private int xPosition, yPosition;
 
-    public int getxPosition()
-    {
+    public int getxPosition() {
         return xPosition;
     }
 
-    public void setxPosition(int xPosition)
-    {
+    public void setxPosition(int xPosition) {
         this.xPosition = xPosition;
     }
 
-    public int getyPosition()
-    {
+    public int getyPosition() {
         return yPosition;
     }
 
-    public void setyPosition(int yPosition)
-    {
+    public void setyPosition(int yPosition) {
         this.yPosition = yPosition;
     }
 }
