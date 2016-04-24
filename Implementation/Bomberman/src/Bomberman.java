@@ -40,7 +40,10 @@ public class Bomberman extends GameObject implements Explodable
     @Override
     public void beExploded (GameEngine engine)
     {
-
+        if (getShield() <= 0 && getLives() <= 0)
+        {
+            engine.deleteGameObject(this);
+        }
     }
 
     /**
@@ -51,7 +54,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void move (int x, int y)
     {
-
+        setXPosition(x);
+        setYPosition(y);
     }
 
     /**
@@ -60,7 +64,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void giveShield ()
     {
-
+        setShield(getShield() + 1);
     }
 
     /**
@@ -69,7 +73,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseLimit ()
     {
-
+        setBombLimit(getBombLimit() + 1);
     }
 
     /**
@@ -78,7 +82,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseMagnitude ()
     {
-
+        setBombMagnitude(getBombMagnitude() + 1);
     }
 
     /**
@@ -87,7 +91,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseSpeed ()
     {
-
+        setSpeed(getSpeed() + 1);
     }
 
     public int getId() {
