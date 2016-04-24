@@ -6,19 +6,7 @@
 public abstract class GameObject
 {
     // Local Variables
-    int xPosition, yPosition;
-
-    /**
-     * The constructor of the GameObject class.
-     *
-     * @param x x position of the created GameObject.
-     * @param y y position of the created GameObject.
-     */
-    public GameObject (int x, int y)
-    {
-        this.xPosition = x;
-        this.yPosition = y;
-    }
+    private int xPosition, yPosition;
 
     public int getXPosition() {
         return xPosition;
