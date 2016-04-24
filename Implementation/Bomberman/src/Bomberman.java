@@ -20,12 +20,24 @@ public class Bomberman extends GameObject implements Explodable
      */
     public Bomberman (int x, int y)
     {
-        super (x, y);
+        this.setXPosition(x);
+        this.setYPosition(y);
         this.lives = 2;
         this.speed = 1;
         this.bombLimit = 1;
         this.bombMagnitude = 1;
         this.shield = 0;
+    }
+
+    @Override
+    public void beExploded (GameEngine engine)
+    {
+
+    }
+
+    public void move ()
+    {
+
     }
 }
 

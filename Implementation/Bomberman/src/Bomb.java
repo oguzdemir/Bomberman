@@ -15,7 +15,8 @@ public class Bomb extends GameObject
      */
     public Bomb (int x, int y, int timeLeft)
     {
-        super (x, y);
+        this.setXPosition(x);
+        this.setYPosition(y);
         this.timeLeft = timeLeft;
     }
 
