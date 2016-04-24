@@ -3,24 +3,24 @@
  *
  * Created by Anıl Sert on 24.4.2016.
  */
-public abstract class GameObject
+public abstract class GameObject implements Explodable
 {
     // Local Variables
     private int xPosition, yPosition;
 
-    public int getXPosition() {
+    public int getxPosition() {
         return xPosition;
     }
 
-    public void setXPosition(int xPosition) {
+    public void setxPosition(int xPosition) {
         this.xPosition = xPosition;
     }
 
-    public int getYPosition() {
+    public int getyPosition() {
         return yPosition;
     }
 
-    public void setYPosition(int yPosition) {
+    public void setyPosition(int yPosition) {
         this.yPosition = yPosition;
     }
 }

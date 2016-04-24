@@ -5,19 +5,36 @@
  */
 public class Bomb extends GameObject
 {
+
     // Local Variables
+    private int owner;
     private int timeLeft;
 
     /**
      *
      * @param x x position of the created Bomb.
      * @param y y position of the created Bomb.
+     * @param owner owner of the Bomb.
      */
-    public Bomb (int x, int y, int timeLeft)
+    public Bomb (int x, int y, int owner)
     {
-        this.setXPosition(x);
-        this.setYPosition(y);
-        this.timeLeft = timeLeft;
+        this.setxPosition(x);
+        this.setyPosition(y);
+        this.owner = owner;
+        this.timeLeft = 3;
+    }
+
+    /**
+     * This method is called when the bomb is exploded and the GameEngine
+     * deletes the GameObject.
+     *
+     * @param engine reference for the GameEngine class of the game.
+     */
+    @Override
+    public void beExploded (GameEngine engine)
+    {
+        if (countDown())
+            engine.deleteGameObject(this);
     }
 
     /**
@@ -38,5 +55,15 @@ public class Bomb extends GameObject
 
     public void setTimeLeft(int timeLeft) {
         this.timeLeft = timeLeft;
+    }
+
+    public int getOwner()
+    {
+        return owner;
+    }
+
+    public void setOwner(int owner)
+    {
+        this.owner = owner;
     }
 }

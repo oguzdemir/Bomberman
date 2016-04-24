@@ -21,8 +21,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public Bomberman (int x, int y, int id)
     {
-        this.setXPosition(x);
-        this.setYPosition(y);
+        this.setxPosition(x);
+        this.setyPosition(y);
         this.id = id;
         this.lives = 2;
         this.speed = 1;
@@ -54,8 +54,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void move (int x, int y)
     {
-        setXPosition(x);
-        setYPosition(y);
+        setxPosition(x);
+        setyPosition(y);
     }
 
     /**

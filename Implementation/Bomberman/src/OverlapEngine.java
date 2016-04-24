@@ -5,7 +5,6 @@
  */
 public class OverlapEngine
 {
-
     /**
      * Check the collisions between two GameObject given as a parameter
      * and give the result according to their positions.
@@ -16,7 +15,7 @@ public class OverlapEngine
      */
     public boolean checkCollide(GameObject obj1, GameObject obj2)
     {
-        return  obj1.getXPosition() == obj2.getXPosition() &&
-                obj1.getYPosition() == obj2.getYPosition();
+        return  obj1.getxPosition() == obj2.getxPosition() &&
+                obj1.getyPosition() == obj2.getyPosition();
     }
 }

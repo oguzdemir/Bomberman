@@ -3,6 +3,7 @@
  *
  * Created by Anıl Sert on 24.04.2016.
  */
-public interface Explodable {
-    void  beExploded (GameEngine engine);
+public interface Explodable
+{
+    void beExploded(GameEngine Engine);
 }
