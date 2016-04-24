@@ -30,4 +30,12 @@ public class Bomb extends GameObject
 
         return timeLeft <= 0;
     }
+
+    public int getTimeLeft() {
+        return timeLeft;
+    }
+
+    public void setTimeLeft(int timeLeft) {
+        this.timeLeft = timeLeft;
+    }
 }
