@@ -89,5 +89,53 @@ public class Bomberman extends GameObject implements Explodable
     {
 
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getBombLimit() {
+        return bombLimit;
+    }
+
+    public void setBombLimit(int bombLimit) {
+        this.bombLimit = bombLimit;
+    }
+
+    public int getBombMagnitude() {
+        return bombMagnitude;
+    }
+
+    public void setBombMagnitude(int bombMagnitude) {
+        this.bombMagnitude = bombMagnitude;
+    }
+
+    public int getShield() {
+        return shield;
+    }
+
+    public void setShield(int shield) {
+        this.shield = shield;
+    }
 }
 
