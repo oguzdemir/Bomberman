@@ -12,7 +12,7 @@ public class OverlapEngine
      *
      * @param obj1 first object for checking collisions between.
      * @param obj2 second object for checking collisions between.
-     * @return objects are colliding or not
+     * @return objects are colliding or not.
      */
     public boolean checkCollide(GameObject obj1, GameObject obj2)
     {
