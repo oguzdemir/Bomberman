@@ -1,7 +1,9 @@
 /**
- * Bomberman class for the players to interact with the game.
+ * Bomberman class for bomber object in the game.
  *
  * Created by Anıl Sert on 24.4.2016.
+ *
+ * Revised on 26.4.2016 by Oguz Demir
  */
 public class Bomberman extends GameObject implements Explodable
 {
@@ -18,17 +20,18 @@ public class Bomberman extends GameObject implements Explodable
      *
      * @param x x position of the created Bomberman.
      * @param y y position of the created Bomberman.
+     * @param id unique id for bomber
      */
     public Bomberman (int x, int y, int id)
     {
-        this.setxPosition(x);
-        this.setyPosition(y);
+        xPosition = x;
+        yPosition = y;
         this.id = id;
-        this.lives = 2;
-        this.speed = 1;
-        this.bombLimit = 1;
-        this.bombMagnitude = 1;
-        this.shield = 0;
+        lives = 2;
+        speed = 1;
+        bombLimit = 1;
+        bombMagnitude = 1;
+        shield = 0;
     }
 
     /**
@@ -40,10 +43,17 @@ public class Bomberman extends GameObject implements Explodable
     @Override
     public void beExploded (GameEngine engine)
     {
-        if (getShield() <= 0 && getLives() <= 0)
+        if(shield <= 0)
         {
-            engine.deleteGameObject(this);
+            if(lives == 0)
+            {
+                engine.deleteGameObject(this);
+            }
+            else
+                lives--;
         }
+        else
+            shield = 0;
     }
 
     /**
@@ -56,6 +66,9 @@ public class Bomberman extends GameObject implements Explodable
     {
         setxPosition(x);
         setyPosition(y);
+
+        if(shield > 0)
+            shield--;
     }
 
     /**
@@ -64,7 +77,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void giveShield ()
     {
-        setShield(getShield() + 1);
+        shield = 3;
     }
 
     /**
@@ -73,7 +86,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseLimit ()
     {
-        setBombLimit(getBombLimit() + 1);
+        if(bombLimit < 3)
+            bombLimit++;
     }
 
     /**
@@ -82,7 +96,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseMagnitude ()
     {
-        setBombMagnitude(getBombMagnitude() + 1);
+        if(bombMagnitude < 3)
+            bombMagnitude++;
     }
 
     /**
@@ -91,7 +106,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseSpeed ()
     {
-        setSpeed(getSpeed() + 1);
+        if(speed < 4)
+            speed++;
     }
 
     public int getId() {
@@ -102,44 +118,19 @@ public class Bomberman extends GameObject implements Explodable
         this.id = id;
     }
 
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public int getBombLimit() {
-        return bombLimit;
-    }
-
-    public void setBombLimit(int bombLimit) {
-        this.bombLimit = bombLimit;
-    }
-
-    public int getBombMagnitude() {
+    public int getBombMagnitude()
+    {
         return bombMagnitude;
     }
 
-    public void setBombMagnitude(int bombMagnitude) {
-        this.bombMagnitude = bombMagnitude;
+    public int getBombLimit()
+    {
+        return bombLimit;
     }
 
-    public int getShield() {
-        return shield;
-    }
-
-    public void setShield(int shield) {
-        this.shield = shield;
+    public int getSpeed()
+    {
+        return speed;
     }
 }
 

@@ -18,10 +18,10 @@ public class Bomb extends GameObject
      */
     public Bomb (int x, int y, int owner)
     {
-        this.setxPosition(x);
-        this.setyPosition(y);
+        xPosition = x;
+        yPosition = y;
         this.owner = owner;
-        this.timeLeft = 3;
+        timeLeft = 3;
     }
 
     /**
@@ -33,8 +33,7 @@ public class Bomb extends GameObject
     @Override
     public void beExploded (GameEngine engine)
     {
-        if (countDown())
-            engine.deleteGameObject(this);
+        return;
     }
 
     /**
@@ -48,6 +47,7 @@ public class Bomb extends GameObject
 
         return timeLeft <= 0;
     }
+
 
     public int getTimeLeft() {
         return timeLeft;
@@ -66,4 +66,6 @@ public class Bomb extends GameObject
     {
         this.owner = owner;
     }
+
+
 }

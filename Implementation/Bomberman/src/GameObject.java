@@ -6,9 +6,10 @@
 public abstract class GameObject implements Explodable
 {
     // Local Variables
-    private int xPosition, yPosition;
+    protected int xPosition, yPosition;
 
-    public int getxPosition() {
+    public int getxPosition()
+    {
         return xPosition;
     }
 
