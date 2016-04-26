@@ -32,14 +32,136 @@ public class GameManager {
 
     }
 
-    
-
-    public static GameManager getInstance() {
+    /**
+     * Creates the GameManager instance for the first time if doesn't exist
+     * or return the instance.
+     *
+     * @return singleton instance of the class.
+     */
+    public static GameManager getInstance ()
+    {
+        // TODO Write the method body
         return instance;
     }
 
-    public static void setInstance(GameManager instance) {
-        GameManager.instance = instance;
+    /**
+     * Get the information of the next level from the FileManager
+     * and load it.
+     */
+    public void loadNextLevel ()
+    {
+
+    }
+
+    /**
+     * Finishes the game and change the game state.
+     */
+    public void finishGame ()
+    {
+
+    }
+
+    /**
+     * Load the desired level from the FileManager and load it.
+     *
+     * @param levelNo desired level to be loaded.
+     */
+    public void loadLevel (int levelNo)
+    {
+
+    }
+
+    /**
+     * Called by the MainFrame to change the high scores with the
+     * user name and new high score and update the list with the help of
+     * FileManager.
+     */
+    public void registerHighScores ()
+    {
+
+    }
+
+    /**
+     * Called by the MainFrame to get high scores data.
+     *
+     * @return high scores String representation.
+     */
+    public String getHighScores ()
+    {
+        return "";
+    }
+
+    /**
+     * Called by the MainFrame to get settings data.
+     *
+     * @return settings String representation.
+     */
+    public String getSettings ()
+    {
+        return "";
+    }
+
+    /**
+     * Update high scores with using the FileManager.
+     *
+     * @param scores changed high scores String representation.
+     */
+    public void updateHighScores (String scores)
+    {
+
+    }
+
+    /**
+     * Update settings with using the FileManager.
+     *
+     * @param settings changed settings String representation.
+     */
+    public void updateSettings (String settings)
+    {
+
+    }
+
+    /**
+     * Single player version of controlling players.
+     * Lets player to control the Bomberman using GameEngine.
+     *
+     * @param directions user input coming from MainFrame.
+     */
+    public void controlPlayer (int[] directions)
+    {
+
+    }
+
+    /**
+     * Multi player version of controlling players.
+     * Lets both players to control their Bomberman using GameEngine.
+     *
+     * @param directions1 user input for the first player.
+     * @param directions2 user input for the second player.
+     */
+    public void controlPlayer (int[] directions1, int[] directions2)
+    {
+
+    }
+
+    /**
+     * Called by the MainFrame to learn the state of the game.
+     *
+     * @return state of the game.
+     */
+    public int getGameState ()
+    {
+        return gameState;
+    }
+
+    /**
+     * Changes the state of the game.
+     *
+     * @param status desired state to be changed.
+     */
+    public void changeGameStatus (int status)
+    {
+
     }
 
     public int getCurrentLevel() {
@@ -66,14 +188,6 @@ public class GameManager {
         this.currentScore = currentScore;
     }
 
-    public int getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(int gameState) {
-        this.gameState = gameState;
-    }
-
     public int getSoundLevel() {
         return soundLevel;
     }
@@ -96,14 +210,6 @@ public class GameManager {
 
     public void setMusicAdr(String musicAdr) {
         this.musicAdr = musicAdr;
-    }
-
-    public String getHighScores() {
-        return highScores;
-    }
-
-    public void setHighScores(String highScores) {
-        this.highScores = highScores;
     }
 
     public GameEngine getgEngine() {
