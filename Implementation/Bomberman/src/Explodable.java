@@ -5,5 +5,5 @@
  */
 public interface Explodable
 {
-    void beExploded(GameEngine Engine);
+    void beExploded(GameEngine engine);
 }

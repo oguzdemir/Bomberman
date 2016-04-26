@@ -4,5 +4,5 @@
 public abstract class WallRole
 {
     private int scoreValue;
-    public abstract void destroy(GameEngine Engine, Wall wall);
+    public abstract void destroy(GameEngine engine, Wall wall);
 }

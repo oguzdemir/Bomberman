@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by od on 23.4.2016.
+ * Created by Oguz Demir on 23.4.2016.
  */
 public class GameEngine
 {
@@ -18,6 +18,10 @@ public class GameEngine
     private boolean twoPlayers;
     private static final int GRID_DIMENSION = 40;
     //Constructor
+    /**
+    Constructor called by GameManager with 2D array holding the wall map and the dimension size.
+    Also, gametype is given with a boolean
+     */
     public GameEngine(int[][] map, int n, boolean twoPlayers)
     {
         //Initializing the collections
@@ -78,7 +82,15 @@ public class GameEngine
         oEngine = new OverlapEngine();
     }
 
-    public boolean elapseTime(int x1, int y1, boolean b1, int timeAmount)
+    /**
+     * In singleplayer game, elapseTime method is called by GameManager to advance game
+     * with directions of player
+     * @param x1 movement in x axis for player1's bomber
+     * @param y1 movement in y axis for player1's bomber
+     * @param b1 is action flag for dropping bomb for player1's bomber
+     * @return flag for indicating game is ended or not.
+     */
+    public boolean elapseTime(int x1, int y1, boolean b1)
     {
         if(!gameState)
         {
@@ -97,7 +109,7 @@ public class GameEngine
             dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
         }
         int pixelConstant = GRID_DIMENSION / 4;
-        moveBomberman(0,x1 *pixelConstant  ,y1 * pixelConstant);
+        moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
 
         Random generator = new Random();
         int randomIndex1, randomIndex2;
@@ -107,19 +119,19 @@ public class GameEngine
         randomIndex1= generator.nextInt( 3 ) - 1;
         randomIndex2= generator.nextInt( 3 ) - 1;
 
-        moveBomberman(1,randomIndex1 * pixelConstant ,randomIndex2 * pixelConstant);
+        moveBomberman(1,randomIndex1 * pixelConstant * bomberList[1].getSpeed() ,randomIndex2 * pixelConstant * bomberList[1].getSpeed());
 
         //Moving 3rd
         randomIndex1= generator.nextInt( 3 ) - 1;
         randomIndex2= generator.nextInt( 3 ) - 1;
 
-        moveBomberman(2,randomIndex1 * pixelConstant ,randomIndex2 * pixelConstant);
+        moveBomberman(2,randomIndex1 * pixelConstant * bomberList[2].getSpeed() ,randomIndex2 * pixelConstant * bomberList[2].getSpeed());
 
         //Moving 4th
         randomIndex1= generator.nextInt( 3 ) - 1;
         randomIndex2= generator.nextInt( 3 ) - 1;
 
-        moveBomberman(3,randomIndex1 * pixelConstant ,randomIndex2 * pixelConstant);
+        moveBomberman(3,randomIndex1 * pixelConstant * bomberList[3].getSpeed() ,randomIndex2 * pixelConstant * bomberList[3].getSpeed());
 
         //RANDOMLY DROP BOMBS FOR 3 CPU BOMBERS, WITH 10% probability
         randomIndex1= generator.nextInt( 10 );
@@ -143,18 +155,30 @@ public class GameEngine
         return false;
 
     }
-    public boolean elapseTime(int x1, int y1, boolean b1, int x2, int y2, boolean b2, int timeAmount)
+
+    /**
+     * In singleplayer game, elapseTime method is called by GameManager to advance game
+     * with directions of players
+     * @param x1 movement in x axis for player1's bomber
+     * @param y1 movement in y axis for player1's bomber
+     * @param b1 is action flag for dropping bomb for player1's bomber
+     * @param x2 movement in x axis for player2's bomber
+     * @param y2 movement in y axis for player2's bomber
+     * @param b2 is action flag for dropping bomb for player2's bomber
+     * @return flag for indicating game is ended or not.
+     */
+    public boolean elapseTime(int x1, int y1, boolean b1, int x2, int y2, boolean b2)
     {
         if(!gameState)
         {
             return true;
         }
-        for(int i = 0 ; i < bombList.size() ; i++)
+        for(Bomb bomb: bombList)
         {
-            boolean b = bombList.get(i).countDown();
+            boolean b = bomb.countDown();
             if(b)
             {
-                explodeBomb(bombList.get(i));
+                explodeBomb(bomb);
             }
         }
         int pixelConstant = GRID_DIMENSION / 4;
@@ -165,7 +189,7 @@ public class GameEngine
                 dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
             }
 
-            moveBomberman(0,x1 *pixelConstant  ,y1 * pixelConstant);
+            moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed()  ,y1 * pixelConstant * bomberList[0].getSpeed());
         }
         if(bomberList[1] != null)
         {
@@ -174,7 +198,7 @@ public class GameEngine
                 dropBomb(bomberList[1].getxPosition(), bomberList[1].getyPosition(), 1 );
             }
             pixelConstant = GRID_DIMENSION / 4;
-            moveBomberman(1,x2 *pixelConstant  ,y2 * pixelConstant);
+            moveBomberman(1,x2 *pixelConstant * bomberList[1].getSpeed()  ,y2 * pixelConstant * bomberList[1].getSpeed());
         }
 
 
@@ -187,13 +211,13 @@ public class GameEngine
         randomIndex1= generator.nextInt( 3 ) - 1;
         randomIndex2= generator.nextInt( 3 ) - 1;
 
-        moveBomberman(2,randomIndex1 * pixelConstant ,randomIndex2 * pixelConstant);
+        moveBomberman(2,randomIndex1 * pixelConstant * bomberList[2].getSpeed() ,randomIndex2 * pixelConstant * bomberList[2].getSpeed());
 
         //Moving 4th
         randomIndex1= generator.nextInt( 3 ) - 1;
         randomIndex2= generator.nextInt( 3 ) - 1;
 
-        moveBomberman(3,randomIndex1 * pixelConstant ,randomIndex2 * pixelConstant);
+        moveBomberman(3,randomIndex1 * pixelConstant * bomberList[3].getSpeed() ,randomIndex2 * pixelConstant * bomberList[3].getSpeed());
 
         //RANDOMLY DROP BOMBS FOR 2 CPU BOMBERS, WITH 10% probability
         randomIndex1= generator.nextInt( 10 );
@@ -218,6 +242,10 @@ public class GameEngine
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Method is called for deleting an object from game
+     * @param object is object to be deleted.
+     */
     public void deleteGameObject(GameObject object)
     {
         if(object instanceof Bomberman)
@@ -253,6 +281,12 @@ public class GameEngine
 
     }
 
+    /**
+     *
+     * @param index which bomberman to be moved
+     * @param x delta x on x axis
+     * @param y delta x on y axis
+     */
     private void moveBomberman(int index, int x, int y)
     {
         Bomberman b = bomberList[index];
@@ -275,6 +309,13 @@ public class GameEngine
         b.move(x *(-1), y * (-1));
 
     }
+
+    /**
+     *
+     * @param x location of bomb on x axis
+     * @param y location of bomb on y axis
+     * @param owner the bomber dropped that bomb
+     */
     private void dropBomb( int x , int y, int owner)
     {
         Bomb newBomb = new Bomb(x, y, owner);
@@ -288,6 +329,10 @@ public class GameEngine
 
     }
 
+    /**
+     * explodeBomb method is called whenever a bomb is exploded, it process the object nearby for explosion
+     * @param bomb is the bomb exploded
+     */
     private void explodeBomb(Bomb bomb)
     {
         int magnitude = bomberList[bomb.getOwner()].getBombMagnitude();
