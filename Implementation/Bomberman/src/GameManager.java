@@ -88,7 +88,7 @@ public class GameManager {
      */
     public String getHighScores ()
     {
-        return "";
+        return highScores;
     }
 
     /**
@@ -98,7 +98,7 @@ public class GameManager {
      */
     public String getSettings ()
     {
-        return "";
+        return fManager.loadSettings ();
     }
 
     /**
@@ -108,7 +108,7 @@ public class GameManager {
      */
     public void updateHighScores (String scores)
     {
-
+        fManager.setHighScores (scores);
     }
 
     /**
@@ -118,7 +118,7 @@ public class GameManager {
      */
     public void updateSettings (String settings)
     {
-
+        fManager.saveSettings (settings);
     }
 
     /**
@@ -161,7 +161,7 @@ public class GameManager {
      */
     public void changeGameStatus (int status)
     {
-
+        gameState = status;
     }
 
     public int getCurrentLevel() {
