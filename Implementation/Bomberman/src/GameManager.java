@@ -6,7 +6,7 @@
  */
 public class GameManager {
     // Instance of the class for satisfying singleton property
-    private static GameManager instance;
+    private static GameManager instance = new GameManager();
 
     // Local variables
     private int currentLevel;
@@ -27,9 +27,25 @@ public class GameManager {
      * Initializes the GameManager object with default properties and
      * settings taken from the FileManager.
      */
-    public GameManager ()
+    private GameManager ()
     {
+        currentLevel = 0;
+        remainingTime = 300;
+        currentScore = 0;
+        gameState = 0; // Main menu state is 0
 
+        loadLevel(currentLevel);
+        fManager = new FileManager();
+        sManager = new SoundManager();
+        frame = new MainFrame (instance, gEngine);
+
+        /*
+        String settings = fManager.loadSettings();
+
+        soundLevel =
+        musicLevel =
+        musicAdr =
+        */
     }
 
     /**
@@ -40,7 +56,6 @@ public class GameManager {
      */
     public static GameManager getInstance ()
     {
-        // TODO Write the method body
         return instance;
     }
 
@@ -50,7 +65,7 @@ public class GameManager {
      */
     public void loadNextLevel ()
     {
-
+        loadLevel(currentLevel + 1);
     }
 
     /**
@@ -58,7 +73,8 @@ public class GameManager {
      */
     public void finishGame ()
     {
-
+        gameState = 6; // Game Over state = 6
+        gEngine = null;
     }
 
     /**
@@ -68,7 +84,11 @@ public class GameManager {
      */
     public void loadLevel (int levelNo)
     {
+        int[][] gameData = fManager.getGameData(levelNo);
+        int size = gameData.length * gameData[0].length;
+        boolean twoPlayer = getGameState() == 2; // Two player state = 2
 
+        gEngine = new GameEngine(gameData, size, twoPlayer);
     }
 
     /**
@@ -78,7 +98,7 @@ public class GameManager {
      */
     public void registerHighScores ()
     {
-
+        fManager.setHighScores (highScores);
     }
 
     /**
@@ -88,7 +108,7 @@ public class GameManager {
      */
     public String getHighScores ()
     {
-        return highScores;
+        return fManager.loadHighScores();
     }
 
     /**
@@ -102,13 +122,31 @@ public class GameManager {
     }
 
     /**
-     * Update high scores with using the FileManager.
+     * Update high scores string.
      *
      * @param scores changed high scores String representation.
      */
     public void updateHighScores (String scores)
     {
-        fManager.setHighScores (scores);
+        String[] scoreList = getHighScores().split(" ");
+        String newName = scores.split(" ")[0]
+        String newScore = scores.split(" ")[1];
+        String newHighScores = "";
+
+        for (int i = 0; i < scoreList.length - 1; i = i + 2)
+        {
+            String name = scoreList[i];
+            String score = scoreList[i + 1];
+
+            if (Integer.parseInt(score) < Integer.parseInt(newScore))
+            {
+                newHighScores += newName + " " + newScore + " ";
+            }
+
+            newHighScores += name + " " + score + " ";
+        }
+
+        highScores = newHighScores;
     }
 
     /**
@@ -129,7 +167,9 @@ public class GameManager {
      */
     public void controlPlayer (int[] directions)
     {
+        boolean dropBomb = directions[2] == 1;
 
+        gEngine.elapseTime(directions[0], directions[1], dropBomb);
     }
 
     /**
@@ -141,7 +181,10 @@ public class GameManager {
      */
     public void controlPlayer (int[] directions1, int[] directions2)
     {
+        boolean dropBomb1 = directions1[2] == 1;
+        boolean dropBomb2 = directions2[2] == 1;
 
+        gEngine.elapseTime(directions1[0], directions1[1], dropBomb1, directions2[0], directions2[1], dropBomb2);
     }
 
     /**
