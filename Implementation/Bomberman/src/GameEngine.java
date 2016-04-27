@@ -258,10 +258,15 @@ public class GameEngine
 
     }
 
-    public void addPowerUp(int x, int y)
+    public void changeWallType(Wall w)
     {
-        // TODO - implement GameEngine.addGameObject
-        throw new UnsupportedOperationException();
+        int xCoordinate = w.getxPosition();
+        int yCoordinate = w.getyPosition();
+
+        int xGrid = xCoordinate / GRID_DIMENSION;
+        int yGrid = yCoordinate / GRID_DIMENSION;
+
+        objectIntMap[xGrid][yGrid] = 1;
     }
 
     /**
@@ -330,8 +335,14 @@ public class GameEngine
             GameObject o = objectMap[corners[i].x / GRID_DIMENSION ][corners[i].y / GRID_DIMENSION];
             if(o != null)
             {
-                if( !(o instanceof Bomb))
+                if( o instanceof Wall)
                     b.move(x *(-1), y * (-1));
+                if( o instanceof PowerUp)
+                {
+                    ((PowerUp) o).beTaken(b);
+                    deleteGameObject(o);
+                }
+
                 return;
             }
         }
@@ -377,11 +388,45 @@ public class GameEngine
             int yGrid = y / GRID_DIMENSION;
 
             objectMap[xGrid][yGrid] = newBomb;
-            objectIntMap[xGrid][yGrid] = 5;
+            objectIntMap[xGrid][yGrid] = 4 + owner;
         }
 
     }
 
+    public void dropPowerUp( int x , int y)
+    {
+        Random generator = new Random();
+        int dropOrNot =  generator.nextInt( 2 );
+
+        if(dropOrNot == 1)
+        {
+            int type =  generator.nextInt( 4 );
+            PowerUp newPowerUp;
+            if(type == 0)
+            {
+                newPowerUp = new Shield(x,y);
+            }
+            else if(type == 1)
+            {
+                newPowerUp = new SpeedUp(x,y);
+            }
+            else if(type == 2)
+            {
+                newPowerUp = new LimitUp(x,y);
+            }
+            else
+            {
+                newPowerUp = new MagnitudeUp(x,y);
+            }
+
+            int xGrid = x / GRID_DIMENSION;
+            int yGrid = y / GRID_DIMENSION;
+
+            objectMap[xGrid][yGrid] = newPowerUp;
+            objectIntMap[xGrid][yGrid] = type + 8;
+        }
+
+    }
     /**
      * explodeBomb method is called whenever a bomb is exploded, it process the object nearby for explosion
      * @param bomb is the bomb exploded

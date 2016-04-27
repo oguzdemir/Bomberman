@@ -21,7 +21,10 @@ public class GamePanel extends JPanel implements KeyListener
     private GameEngine gEngine;
 
     private final static int GRID_SIZE = 13;
-    private BufferedImage img1,img2,img3,img4,img5;
+    private BufferedImage c1;
+    private BufferedImage b1,b2,b3,b4;
+    private BufferedImage w1,w2,w3;
+    private BufferedImage p1,p2,p3,p4;
     public GamePanel(GameManager manager, GameEngine engine)
     {
         gManager = manager;
@@ -40,11 +43,18 @@ public class GamePanel extends JPanel implements KeyListener
         timer = new Timer(delay, new TimerListener());
 
         try {
-            img1 = ImageIO.read(new File("1.png"));
-            img2 = ImageIO.read(new File("2.png"));
-            img3 = ImageIO.read(new File("3.png"));
-            img4 = ImageIO.read(new File("4.png"));
-            img5 = ImageIO.read(new File("5.png"));
+            c1 = ImageIO.read(new File("c1.png"));
+            b1 = ImageIO.read(new File("b1.png"));
+            b2 = ImageIO.read(new File("b2.png"));
+            b3 = ImageIO.read(new File("b3.png"));
+            b4 = ImageIO.read(new File("b4.png"));
+            w1 = ImageIO.read(new File("w1.png"));
+            w2 = ImageIO.read(new File("w2.png"));
+            w3 = ImageIO.read(new File("w3.png"));
+            p1 = ImageIO.read(new File("p1.png"));
+            p2 = ImageIO.read(new File("p2.png"));
+            p3 = ImageIO.read(new File("p3.png"));
+            p4 = ImageIO.read(new File("p4.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -125,19 +135,33 @@ public class GamePanel extends JPanel implements KeyListener
             for(int j = 0 ; j < GRID_SIZE ; j++)
             {
                 if( abc[i][j] == 1)
-                    g2d.drawImage(img1,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(w1,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( abc[i][j] == 2)
-                    g2d.drawImage(img2,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(w2,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( abc[i][j] == 3)
-                    g2d.drawImage(img3,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(w3,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 4)
+                    g2d.drawImage(b1,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( abc[i][j] == 5)
-                    g2d.drawImage(img5,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(b2,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 6)
+                    g2d.drawImage(b3,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 7)
+                    g2d.drawImage(b4,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 8)
+                    g2d.drawImage(p1,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 9)
+                    g2d.drawImage(p2,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 10)
+                    g2d.drawImage(p3,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                if( abc[i][j] == 11)
+                    g2d.drawImage(p4,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 yCoordinate += 40;
             }
-            g2d.drawImage(img4,bombers[0],bombers[1],40,40,Color.gray,null);
-            g2d.drawImage(img4,bombers[2],bombers[3],40,40,Color.gray,null);
-            g2d.drawImage(img4,bombers[4],bombers[5],40,40,Color.gray,null);
-            g2d.drawImage(img4,bombers[6],bombers[7],40,40,Color.gray,null);
+            g2d.drawImage(c1,bombers[0],bombers[1],40,40,Color.gray,null);
+            g2d.drawImage(c1,bombers[2],bombers[3],40,40,Color.gray,null);
+            g2d.drawImage(c1,bombers[4],bombers[5],40,40,Color.gray,null);
+            g2d.drawImage(c1,bombers[6],bombers[7],40,40,Color.gray,null);
             xCoordinate += 40;
             yCoordinate = 0;
         }

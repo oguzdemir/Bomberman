@@ -3,42 +3,28 @@
  */
 public class Wall  extends GameObject
 {
-    private WallRole role;
+
     private int type;
+
     public Wall (int x, int y , int type)
     {
         xPosition = x;
         yPosition = y;
+        this.type = type;
 
-        if(type == 1)
-        {
-            role = new BrickWall();
-            type = 1;
-        }
-        else if (type == 2)
-        {
-            role = new StrongBrickWall();
-            type = 2;
-        }
-        else
-        {
-            role = new SteelWall();
-            type = 3;
-        }
     }
     public void beExploded(GameEngine engine)
     {
-        role.destroy(engine,this);
+        if(type == 1)
+        {
+            engine.deleteGameObject(this);
+            engine.dropPowerUp(xPosition,yPosition);
+        }
+        if(type == 2)
+        {
+            engine.changeWallType(this);
+            type = 1;
+        }
     }
 
-    public void changeRole()
-    {
-        role = new BrickWall();
-        type = 1;
-    }
-
-    public int getType()
-    {
-        return type;
-    }
 }

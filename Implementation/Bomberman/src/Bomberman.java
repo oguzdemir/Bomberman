@@ -108,8 +108,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void increaseSpeed ()
     {
-        if(speed < 4)
-            speed++;
+        if(speed < 1.4)
+            speed+= 0.1;
     }
 
     public int getId() {
