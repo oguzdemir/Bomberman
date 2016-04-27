@@ -64,10 +64,10 @@ public class GameEngine
                     objectMap[i][j] = newWall;
                     objectIntMap[i][j] = map[i][j];
                 }
-                xCoordinate += GRID_DIMENSION;
+                yCoordinate += GRID_DIMENSION;
             }
-            yCoordinate += GRID_DIMENSION;
-            xCoordinate = 0;
+            xCoordinate += GRID_DIMENSION;
+            yCoordinate = 0;
         }
 
         int dimension = (n-2) * GRID_DIMENSION;
@@ -300,6 +300,7 @@ public class GameEngine
             bombList.remove(object);
         }
         objectMap[xGrid][yGrid] = null;
+        objectIntMap[xGrid][yGrid] = 0;
 
     }
 
@@ -320,27 +321,17 @@ public class GameEngine
         int yCoordinate = b.getyPosition();
 
         corners[0] = new Point(xCoordinate+2, yCoordinate+2);
-        corners[1] = new Point(xCoordinate + 38, yCoordinate+2);
-        corners[2] = new Point(xCoordinate+2, yCoordinate + 38);
+        corners[1] = new Point(xCoordinate+2, yCoordinate + 38);
+        corners[2] = new Point(xCoordinate + 38, yCoordinate+2);
         corners[3] = new Point(xCoordinate + 38 , yCoordinate + 38);
 
         for(int i = 0; i < 4 ; i ++)
         {
-            GameObject o = objectMap[corners[i].y / GRID_DIMENSION ][corners[i].x / GRID_DIMENSION];
+            GameObject o = objectMap[corners[i].x / GRID_DIMENSION ][corners[i].y / GRID_DIMENSION];
             if(o != null)
             {
-                System.out.println(" It is collided with " + corners[i].x / GRID_DIMENSION  + " and " + corners[i].y / GRID_DIMENSION );
-                for(int k = 0 ; k < 13 ; k++)
-                {
-                    for(int j = 0 ; j < 13 ; j++)
-                        if(objectMap[k][j] == null)
-                            System.out.print(0);
-                        else
-                            System.out.print(1);
-                    System.out.println("");
-                }
-                System.out.println("");
-                b.move(x *(-1), y * (-1));
+                if( !(o instanceof Bomb))
+                    b.move(x *(-1), y * (-1));
                 return;
             }
         }
@@ -372,14 +363,22 @@ public class GameEngine
      */
     private void dropBomb( int x , int y, int owner)
     {
-        Bomb newBomb = new Bomb(x, y, owner);
-        bombList.add(newBomb);
+        int count = 0;
+        for(int i = 0 ; i < bombList.size() ; i++)
+            if (bombList.get(i).getOwner() == owner)
+                count++;
 
-        int xGrid = x / GRID_DIMENSION;
-        int yGrid = y / GRID_DIMENSION;
+        if(count < bomberList[owner].getBombLimit())
+        {
+            Bomb newBomb = new Bomb(x, y, owner);
+            bombList.add(newBomb);
 
-        objectMap[xGrid][yGrid] = newBomb;
+            int xGrid = x / GRID_DIMENSION;
+            int yGrid = y / GRID_DIMENSION;
 
+            objectMap[xGrid][yGrid] = newBomb;
+            objectIntMap[xGrid][yGrid] = 5;
+        }
 
     }
 
@@ -405,6 +404,10 @@ public class GameEngine
 
         int xGrid = xCoordinate / GRID_DIMENSION;
         int yGrid = yCoordinate / GRID_DIMENSION;
+
+        objectMap[xGrid][yGrid] = null;
+        objectIntMap[xGrid][yGrid] = 0;
+        bombList.remove(bomb);
 
         //left direction
         for(int i = 1 ; i <= magnitude ; i++)

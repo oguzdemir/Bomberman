@@ -43,7 +43,9 @@ public class Bomberman extends GameObject implements Explodable
     @Override
     public void beExploded (GameEngine engine)
     {
-        if(shield <= 0)
+        return;
+
+        /*if(shield <= 0)
         {
             if(lives == 0)
             {
@@ -53,7 +55,7 @@ public class Bomberman extends GameObject implements Explodable
                 lives--;
         }
         else
-            shield = 0;
+            shield = 0;*/
     }
 
     /**

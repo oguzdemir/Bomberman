@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements KeyListener
     private GameEngine gEngine;
 
     private final static int GRID_SIZE = 13;
-    private BufferedImage img1,img2,img3,img4;
+    private BufferedImage img1,img2,img3,img4,img5;
     public GamePanel(GameManager manager, GameEngine engine)
     {
         gManager = manager;
@@ -44,6 +44,7 @@ public class GamePanel extends JPanel implements KeyListener
             img2 = ImageIO.read(new File("2.png"));
             img3 = ImageIO.read(new File("3.png"));
             img4 = ImageIO.read(new File("4.png"));
+            img5 = ImageIO.read(new File("5.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -76,7 +77,10 @@ public class GamePanel extends JPanel implements KeyListener
                 break;
             case KeyEvent.VK_RIGHT :
                 directions1[0] = 1;
-                System.out.println("prees");
+                // handle right
+                break;
+            case KeyEvent.VK_SPACE :
+                directions1[2] = 1;
                 // handle right
                 break;
         }
@@ -97,9 +101,9 @@ public class GamePanel extends JPanel implements KeyListener
                 break;
             case KeyEvent.VK_RIGHT :
                 directions1[0] = 0;
-                System.out.println("prees");
                 // handle right
                 break;
+
         }
     }
 
@@ -126,14 +130,16 @@ public class GamePanel extends JPanel implements KeyListener
                     g2d.drawImage(img2,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( abc[i][j] == 3)
                     g2d.drawImage(img3,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                xCoordinate += 40;
+                if( abc[i][j] == 5)
+                    g2d.drawImage(img5,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                yCoordinate += 40;
             }
             g2d.drawImage(img4,bombers[0],bombers[1],40,40,Color.gray,null);
             g2d.drawImage(img4,bombers[2],bombers[3],40,40,Color.gray,null);
             g2d.drawImage(img4,bombers[4],bombers[5],40,40,Color.gray,null);
             g2d.drawImage(img4,bombers[6],bombers[7],40,40,Color.gray,null);
-            yCoordinate += 40;
-            xCoordinate = 0;
+            xCoordinate += 40;
+            yCoordinate = 0;
         }
     }
 
@@ -146,6 +152,7 @@ public class GamePanel extends JPanel implements KeyListener
                 System.out.println("Manager NUll");
             gManager.controlPlayer(directions1);
 
+            directions1[2] = 0;
             repaint();
 
            /* for(int i = 0; i< 3 ; i++)
