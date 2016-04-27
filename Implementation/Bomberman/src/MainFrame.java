@@ -12,11 +12,23 @@ public class MainFrame extends JFrame
 
     public MainFrame(GameManager manager, GameEngine engine)
     {
+        super("MainFrame");
         gManager = manager;
         gEngine = engine;
 
         JButton b1 = new JButton("OPEN GAME");
-        GamePanel p1 = new GamePanel();
+        int [] x = new int[8];
+        GamePanel p1 = new GamePanel(engine.serveGameMap(x),x);
+
+        Container con = getContentPane();
+        con.setLayout(new FlowLayout());
+        this.setSize(500,400);
+
+        con.add(b1);
+        con.add(p1);
+
+
+
         p1.setVisible(false);
 
         b1. addActionListener(new ActionListener()
@@ -28,14 +40,13 @@ public class MainFrame extends JFrame
 
             }
         });
+        setSize(500,500);
+        add(b1);
+        add(p1);
 
-        this.add(b1);
-        this.add(p1);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
-        this.setLocationByPlatform(true);
-        this.setVisible(true);
+        setVisible(true);
 
 
     }

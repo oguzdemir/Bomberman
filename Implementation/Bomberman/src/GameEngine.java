@@ -12,6 +12,7 @@ public class GameEngine
     private ArrayList<Wall> wallList;
     private ArrayList<PowerUp> powerUpList;
     private GameObject[][] objectMap;
+    private int[][] objectIntMap;
     private OverlapEngine oEngine;
     private int gridSize;
     private boolean gameState;
@@ -27,6 +28,8 @@ public class GameEngine
         //Initializing the collections
         bomberList = new Bomberman[4];
         bombList = new ArrayList<Bomb>();
+        wallList = new ArrayList<Wall>();
+        objectIntMap = new int [n][n];
         objectMap =  new GameObject[n][n];
         gridSize = n;
         gameState = true;
@@ -36,14 +39,15 @@ public class GameEngine
             for(int j = 0; j < n; j++)
             {
                 objectMap[i][j] = null;
+                objectIntMap[i][j] = 0;
             }
         }
         //In the corners, bombermans will be placed. So if there is any wall on corners in the given map
         //they will be deleted to open up space for bombers.
-        map[0][0] = 0;
-        map[0][n-1] = 0;
-        map[n-1][0] = 0;
-        map[n-1][n-1] = 0;
+        map[1][1] = 0;
+        map[1][n-2] = 0;
+        map[n-2][1] = 0;
+        map[n-2][n-2] = 0;
 
 
         int xCoordinate = 0;
@@ -57,6 +61,7 @@ public class GameEngine
                     Wall newWall = new Wall(xCoordinate,yCoordinate, map[i][j]);
                     wallList.add(newWall);
                     objectMap[i][j] = newWall;
+                    objectIntMap[i][j] = map[i][j];
                 }
                 xCoordinate += GRID_DIMENSION;
             }
@@ -64,16 +69,16 @@ public class GameEngine
             xCoordinate = 0;
         }
 
-        int dimension = (n-1) * GRID_DIMENSION;
+        int dimension = (n-2) * GRID_DIMENSION;
 
         //Creating Bomber 1: top left
-        bomberList[0] = new Bomberman(0,0,0);
+        bomberList[0] = new Bomberman(GRID_DIMENSION,GRID_DIMENSION,0);
 
         //Creating Bomber 2: top right
-        bomberList[1] = new Bomberman(0,dimension,1);
+        bomberList[1] = new Bomberman(GRID_DIMENSION,dimension,1);
 
         //Creating Bomber 3: bottom left
-        bomberList[2] = new Bomberman(dimension, 0,2);
+        bomberList[2] = new Bomberman(dimension, GRID_DIMENSION,2);
 
         //Creating Bomber 4: bottom right
         bomberList[3]  = new Bomberman(dimension, dimension,3);
@@ -90,6 +95,18 @@ public class GameEngine
      * @param b1 is action flag for dropping bomb for player1's bomber
      * @return flag for indicating game is ended or not.
      */
+    public int[][]serveGameMap(int [] x)
+    {
+        x[0] = bomberList[0].getxPosition();
+        x[1] = bomberList[0].getyPosition();
+        x[2] = bomberList[1].getxPosition();
+        x[3] = bomberList[1].getyPosition();
+        x[4] = bomberList[2].getxPosition();
+        x[5] = bomberList[2].getyPosition();
+        x[6] = bomberList[3].getxPosition();
+        x[7] = bomberList[3].getyPosition();
+        return objectIntMap;
+    }
     public boolean elapseTime(int x1, int y1, boolean b1)
     {
         if(!gameState)

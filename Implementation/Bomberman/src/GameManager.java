@@ -34,11 +34,12 @@ public class GameManager {
         currentScore = 0;
         gameState = 0; // Main menu state is 0
 
-        loadLevel(currentLevel);
+
         fManager = new FileManager();
         //sManager = new SoundManager();
+        loadLevel(currentLevel);
         frame = new MainFrame (instance, gEngine);
-
+        frame.setVisible( true );
         /*
         String settings = fManager.loadSettings();
 
@@ -88,9 +89,9 @@ public class GameManager {
     {
         currentLevel = levelNo;
         int[][] gameData = fManager.getGameData(levelNo);
-        int size = gameData.length * gameData[0].length;
-        boolean twoPlayer = getGameState() == 2; // Two player state = 2
-
+        int size = gameData.length;
+       // boolean twoPlayer = getGameState() == 2; // Two player state = 2
+        boolean twoPlayer = false;
         gEngine = new GameEngine(gameData, size, twoPlayer);
     }
 
