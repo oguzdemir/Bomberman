@@ -6,7 +6,7 @@
  */
 public class GameManager {
     // Instance of the class for satisfying singleton property
-    private static GameManager instance = new GameManager();
+    private static GameManager instance = null;
 
     // Local variables
     private int currentLevel;
@@ -21,7 +21,7 @@ public class GameManager {
     private GameEngine gEngine;
     private MainFrame frame;
     private FileManager fManager;
-    private SoundManager sManager;
+   // private SoundManager sManager;
 
     /**
      * Initializes the GameManager object with default properties and
@@ -29,14 +29,14 @@ public class GameManager {
      */
     private GameManager ()
     {
-        currentLevel = 0;
+        currentLevel = 1;
         remainingTime = 300;
         currentScore = 0;
         gameState = 0; // Main menu state is 0
 
         loadLevel(currentLevel);
         fManager = new FileManager();
-        sManager = new SoundManager();
+        //sManager = new SoundManager();
         frame = new MainFrame (instance, gEngine);
 
         /*
@@ -56,6 +56,8 @@ public class GameManager {
      */
     public static GameManager getInstance ()
     {
+        if(instance == null)
+            instance = new GameManager();
         return instance;
     }
 
@@ -84,6 +86,7 @@ public class GameManager {
      */
     public void loadLevel (int levelNo)
     {
+        currentLevel = levelNo;
         int[][] gameData = fManager.getGameData(levelNo);
         int size = gameData.length * gameData[0].length;
         boolean twoPlayer = getGameState() == 2; // Two player state = 2
@@ -96,37 +99,37 @@ public class GameManager {
      * user name and new high score and update the list with the help of
      * FileManager.
      */
-    public void registerHighScores ()
+   /* public void registerHighScores ()
     {
         fManager.setHighScores (highScores);
     }
-
+*/
     /**
      * Called by the MainFrame to get high scores data.
      *
      * @return high scores String representation.
      */
-    public String getHighScores ()
+    /*public String getHighScores ()
     {
         return fManager.loadHighScores();
-    }
+    }*/
 
     /**
      * Called by the MainFrame to get settings data.
      *
      * @return settings String representation.
      */
-    public String getSettings ()
+    /*public String getSettings ()
     {
         return fManager.loadSettings ();
-    }
+    }*/
 
     /**
      * Update high scores string.
      *
      * @param scores changed high scores String representation.
      */
-    public void updateHighScores (String scores)
+    /*public void updateHighScores (String scores)
     {
         String[] scoreList = getHighScores().split(" ");
         String newName = scores.split(" ")[0]
@@ -148,16 +151,16 @@ public class GameManager {
 
         highScores = newHighScores;
     }
-
+*/
     /**
      * Update settings with using the FileManager.
      *
      * @param settings changed settings String representation.
      */
-    public void updateSettings (String settings)
+    /*public void updateSettings (String settings)
     {
         fManager.saveSettings (settings);
-    }
+    }*/
 
     /**
      * Single player version of controlling players.
@@ -279,11 +282,11 @@ public class GameManager {
         this.fManager = fManager;
     }
 
-    public SoundManager getsManager() {
+   /* public SoundManager getsManager() {
         return sManager;
     }
 
     public void setsManager(SoundManager sManager) {
         this.sManager = sManager;
-    }
+    }*/
 }
