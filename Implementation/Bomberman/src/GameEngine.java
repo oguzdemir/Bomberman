@@ -135,7 +135,7 @@ public class GameEngine
 
         Random generator = new Random();
         int randomIndex1, randomIndex2;
-/*
+
         //MOVING CPU BOMBERS
         //Moving second
         randomIndex1= generator.nextInt( 3 ) - 1;
@@ -173,7 +173,7 @@ public class GameEngine
         {
             dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 1 );
         }
-*/
+
         return false;
 
     }
@@ -318,6 +318,56 @@ public class GameEngine
     private void moveBomberman(int index, int x, int y)
     {
         Bomberman b = bomberList[index];
+        int xCoordinate = b.getxPosition();
+        int yCoordinate = b.getyPosition();
+
+        if(yCoordinate % GRID_DIMENSION < 10)
+        {
+            b.move(0, -1 * (yCoordinate % GRID_DIMENSION));
+        }
+        if(yCoordinate % GRID_DIMENSION > GRID_DIMENSION - 10)
+        {
+            b.move(0, GRID_DIMENSION - (yCoordinate % GRID_DIMENSION));
+        }
+        if(xCoordinate % GRID_DIMENSION < 10)
+        {
+            b.move(-1 * (xCoordinate % GRID_DIMENSION) , 0);
+        }
+        if((xCoordinate % GRID_DIMENSION) > GRID_DIMENSION - 10)
+        {
+            b.move(GRID_DIMENSION - (xCoordinate % GRID_DIMENSION) ,0);
+        }
+
+        b.move(x,y);
+
+        xCoordinate = b.getxPosition();
+        yCoordinate = b.getyPosition();
+
+        Point[] corners = new Point[4];
+
+
+        corners[0] = new Point(xCoordinate+2, yCoordinate+2);
+        corners[1] = new Point(xCoordinate+2, yCoordinate + 38);
+        corners[2] = new Point(xCoordinate + 38, yCoordinate+2);
+        corners[3] = new Point(xCoordinate + 38 , yCoordinate + 38);
+
+        for(int i = 0; i < 4 ; i ++)
+        {
+            GameObject o = objectMap[corners[i].x / GRID_DIMENSION ][corners[i].y / GRID_DIMENSION];
+            if(o != null)
+            {
+                if( o instanceof Wall)
+                    b.move(x *(-1), y * (-1));
+                if( o instanceof PowerUp)
+                {
+                    ((PowerUp) o).beTaken(b);
+                    deleteGameObject(o);
+                }
+
+                return;
+            }
+        }
+        /*Bomberman b = bomberList[index];
 
         b.move(x,y);
 
@@ -346,23 +396,7 @@ public class GameEngine
                 return;
             }
         }
-
-       /*
-        if(x > 0)
-        {
-            GameObject o = objectMap[xGrid2][yGrid1];
-            if(o == null)
-            {
-                return;
-            }
-            if(o instanceof PowerUp)
-            {
-                ((PowerUp) o).beTaken(b);
-                return;
-            }
-            b.move(x *(-1), y * (-1));
-            return;
-        }*/
+        */
 
     }
 
