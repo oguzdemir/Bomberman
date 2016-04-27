@@ -38,7 +38,7 @@ public class GameManager {
         fManager = new FileManager();
         //sManager = new SoundManager();
         loadLevel(currentLevel);
-        frame = new MainFrame (instance, gEngine);
+        frame = new MainFrame (this, gEngine);
         frame.setVisible( true );
         /*
         String settings = fManager.loadSettings();

@@ -16,21 +16,24 @@ public class MainFrame extends JFrame
         gManager = manager;
         gEngine = engine;
 
-        JButton b1 = new JButton("OPEN GAME");
-        int [] x = new int[8];
-        GamePanel p1 = new GamePanel(engine.serveGameMap(x),x);
+        //JButton b1 = new JButton("OPEN GAME");
+
+
 
         Container con = getContentPane();
         con.setLayout(new FlowLayout());
-        this.setSize(500,400);
 
-        con.add(b1);
+       // con.add(b1);
+
+        GamePanel p1 = new GamePanel(manager,engine);
+        p1.addKeyListener(p1);
+        p1.setFocusable(true);
         con.add(p1);
 
 
 
-        p1.setVisible(false);
-
+        p1.setVisible(true);
+/*
         b1. addActionListener(new ActionListener()
         {
             @Override
@@ -39,10 +42,9 @@ public class MainFrame extends JFrame
                 p1.setVisible(true);
 
             }
-        });
-        setSize(500,500);
-        add(b1);
-        add(p1);
+        });*/
+        setSize(1100,1100);
+
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

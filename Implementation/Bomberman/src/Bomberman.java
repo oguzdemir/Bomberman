@@ -64,8 +64,8 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void move (int x, int y)
     {
-        setxPosition(x);
-        setyPosition(y);
+        setxPosition(xPosition + x);
+        setyPosition(yPosition + y);
 
         if(shield > 0)
             shield--;

@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,22 +10,34 @@ import java.util.Random;
 /**
  * Created by od on 27.4.2016.
  */
-public class GamePanel extends JPanel
+public class GamePanel extends JPanel implements KeyListener
 {
-    int[][] abc;
-    int []bombers;
+    Timer timer;
+
+    int delay = 1;
+    int [] directions1;
+    int [] directions2 = new int[3];
+    private GameManager gManager;
+    private GameEngine gEngine;
+
     private final static int GRID_SIZE = 13;
     private BufferedImage img1,img2,img3,img4;
-    public GamePanel(int[][] given, int [] given2)
+    public GamePanel(GameManager manager, GameEngine engine)
     {
+        gManager = manager;
+        gEngine = engine;
         setBackground(new Color(255,255,255));
         setPreferredSize(new Dimension(1000,1000));
         setMaximumSize(getPreferredSize());
 
-        abc = given;
-        bombers = given2;
+
+        directions1 = new int[3];
+        directions1[0] = 0;
+        directions1[1] = 0;
+        directions1[2] = 0;
         Random generator = new Random();
 
+        timer = new Timer(delay, new TimerListener());
 
         try {
             img1 = ImageIO.read(new File("1.png"));
@@ -34,7 +47,60 @@ public class GamePanel extends JPanel
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+
+        timer.start();
+
+
+
         repaint();
+    }
+
+    public void keyTyped(KeyEvent e)
+    {
+        return;
+    }
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        switch( keyCode ) {
+            case KeyEvent.VK_UP:
+                directions1[1] = -1;
+                break;
+            case KeyEvent.VK_DOWN:
+                directions1[1] = 1;
+                // handle down
+                break;
+            case KeyEvent.VK_LEFT:
+                directions1[0] = -1;
+                // handle left
+                break;
+            case KeyEvent.VK_RIGHT :
+                directions1[0] = 1;
+                System.out.println("prees");
+                // handle right
+                break;
+        }
+    }
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        switch( keyCode ) {
+            case KeyEvent.VK_UP:
+                directions1[1] = 0;
+                break;
+            case KeyEvent.VK_DOWN:
+                directions1[1] = 0;
+                // handle down
+                break;
+            case KeyEvent.VK_LEFT:
+                directions1[0] = 0;
+                // handle left
+                break;
+            case KeyEvent.VK_RIGHT :
+                directions1[0] = 0;
+                System.out.println("prees");
+                // handle right
+                break;
+        }
     }
 
     public void paintComponent(Graphics g)
@@ -44,14 +110,12 @@ public class GamePanel extends JPanel
 
         int xCoordinate = 0;
         int yCoordinate = 0;
-        for(int i = 0; i < GRID_SIZE ; i++)
-        {
-            for (int j = 0; j < GRID_SIZE; j++)
-            {
-                System.out.print(abc[i][j]);
-            }
-            System.out.println("");
-        }
+
+        int [] bombers = new int[8];
+        int[][] abc = gEngine.serveGameMap(bombers);
+
+
+
         for(int i = 0; i < GRID_SIZE ; i++)
         {
             for(int j = 0 ; j < GRID_SIZE ; j++)
@@ -73,4 +137,20 @@ public class GamePanel extends JPanel
         }
     }
 
+
+    private class TimerListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent event)
+        {
+            if(gManager == null)
+                System.out.println("Manager NUll");
+            gManager.controlPlayer(directions1);
+
+            repaint();
+
+           /* for(int i = 0; i< 3 ; i++)
+                directions1[i] = 0;*/
+
+        }
+    }
 }

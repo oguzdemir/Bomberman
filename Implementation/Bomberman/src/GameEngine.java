@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -87,14 +88,7 @@ public class GameEngine
         oEngine = new OverlapEngine();
     }
 
-    /**
-     * In singleplayer game, elapseTime method is called by GameManager to advance game
-     * with directions of player
-     * @param x1 movement in x axis for player1's bomber
-     * @param y1 movement in y axis for player1's bomber
-     * @param b1 is action flag for dropping bomb for player1's bomber
-     * @return flag for indicating game is ended or not.
-     */
+
     public int[][]serveGameMap(int [] x)
     {
         x[0] = bomberList[0].getxPosition();
@@ -107,6 +101,14 @@ public class GameEngine
         x[7] = bomberList[3].getyPosition();
         return objectIntMap;
     }
+    /**
+     * In singleplayer game, elapseTime method is called by GameManager to advance game
+     * with directions of player
+     * @param x1 movement in x axis for player1's bomber
+     * @param y1 movement in y axis for player1's bomber
+     * @param b1 is action flag for dropping bomb for player1's bomber
+     * @return flag for indicating game is ended or not.
+     */
     public boolean elapseTime(int x1, int y1, boolean b1)
     {
         if(!gameState)
@@ -126,11 +128,14 @@ public class GameEngine
             dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
         }
         int pixelConstant = GRID_DIMENSION / 4;
+
+
+
         moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
 
         Random generator = new Random();
         int randomIndex1, randomIndex2;
-
+/*
         //MOVING CPU BOMBERS
         //Moving second
         randomIndex1= generator.nextInt( 3 ) - 1;
@@ -168,7 +173,7 @@ public class GameEngine
         {
             dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 1 );
         }
-
+*/
         return false;
 
     }
@@ -310,20 +315,52 @@ public class GameEngine
 
         b.move(x,y);
 
+        Point[] corners = new Point[4];
         int xCoordinate = b.getxPosition();
         int yCoordinate = b.getyPosition();
 
-        int xGrid = xCoordinate / GRID_DIMENSION;
-        int yGrid = yCoordinate / GRID_DIMENSION;
+        corners[0] = new Point(xCoordinate+2, yCoordinate+2);
+        corners[1] = new Point(xCoordinate + 38, yCoordinate+2);
+        corners[2] = new Point(xCoordinate+2, yCoordinate + 38);
+        corners[3] = new Point(xCoordinate + 38 , yCoordinate + 38);
 
-        GameObject o = objectMap[xGrid][yGrid];
-
-        if(o instanceof PowerUp)
+        for(int i = 0; i < 4 ; i ++)
         {
-            ((PowerUp) o).beTaken(b);
-            return;
+            GameObject o = objectMap[corners[i].y / GRID_DIMENSION ][corners[i].x / GRID_DIMENSION];
+            if(o != null)
+            {
+                System.out.println(" It is collided with " + corners[i].x / GRID_DIMENSION  + " and " + corners[i].y / GRID_DIMENSION );
+                for(int k = 0 ; k < 13 ; k++)
+                {
+                    for(int j = 0 ; j < 13 ; j++)
+                        if(objectMap[k][j] == null)
+                            System.out.print(0);
+                        else
+                            System.out.print(1);
+                    System.out.println("");
+                }
+                System.out.println("");
+                b.move(x *(-1), y * (-1));
+                return;
+            }
         }
-        b.move(x *(-1), y * (-1));
+
+       /*
+        if(x > 0)
+        {
+            GameObject o = objectMap[xGrid2][yGrid1];
+            if(o == null)
+            {
+                return;
+            }
+            if(o instanceof PowerUp)
+            {
+                ((PowerUp) o).beTaken(b);
+                return;
+            }
+            b.move(x *(-1), y * (-1));
+            return;
+        }*/
 
     }
 
