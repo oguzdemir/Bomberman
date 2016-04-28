@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,6 +13,7 @@ public class GameEngine
     private ArrayList<Wall> wallList;
     private ArrayList<PowerUp> powerUpList;
     private GameObject[][] objectMap;
+    private int[][] objectIntMap;
     private OverlapEngine oEngine;
     private int gridSize;
     private boolean gameState;
@@ -27,6 +29,8 @@ public class GameEngine
         //Initializing the collections
         bomberList = new Bomberman[4];
         bombList = new ArrayList<Bomb>();
+        wallList = new ArrayList<Wall>();
+        objectIntMap = new int [n][n];
         objectMap =  new GameObject[n][n];
         gridSize = n;
         gameState = true;
@@ -36,14 +40,15 @@ public class GameEngine
             for(int j = 0; j < n; j++)
             {
                 objectMap[i][j] = null;
+                objectIntMap[i][j] = 0;
             }
         }
         //In the corners, bombermans will be placed. So if there is any wall on corners in the given map
         //they will be deleted to open up space for bombers.
-        map[0][0] = 0;
-        map[0][n-1] = 0;
-        map[n-1][0] = 0;
-        map[n-1][n-1] = 0;
+        map[1][1] = 0;
+        map[1][n-2] = 0;
+        map[n-2][1] = 0;
+        map[n-2][n-2] = 0;
 
 
         int xCoordinate = 0;
@@ -57,23 +62,24 @@ public class GameEngine
                     Wall newWall = new Wall(xCoordinate,yCoordinate, map[i][j]);
                     wallList.add(newWall);
                     objectMap[i][j] = newWall;
+                    objectIntMap[i][j] = map[i][j];
                 }
-                xCoordinate += GRID_DIMENSION;
+                yCoordinate += GRID_DIMENSION;
             }
-            yCoordinate += GRID_DIMENSION;
-            xCoordinate = 0;
+            xCoordinate += GRID_DIMENSION;
+            yCoordinate = 0;
         }
 
-        int dimension = (n-1) * GRID_DIMENSION;
+        int dimension = (n-2) * GRID_DIMENSION;
 
         //Creating Bomber 1: top left
-        bomberList[0] = new Bomberman(0,0,0);
+        bomberList[0] = new Bomberman(GRID_DIMENSION,GRID_DIMENSION,0);
 
         //Creating Bomber 2: top right
-        bomberList[1] = new Bomberman(0,dimension,1);
+        bomberList[1] = new Bomberman(GRID_DIMENSION,dimension,1);
 
         //Creating Bomber 3: bottom left
-        bomberList[2] = new Bomberman(dimension, 0,2);
+        bomberList[2] = new Bomberman(dimension, GRID_DIMENSION,2);
 
         //Creating Bomber 4: bottom right
         bomberList[3]  = new Bomberman(dimension, dimension,3);
@@ -82,6 +88,19 @@ public class GameEngine
         oEngine = new OverlapEngine();
     }
 
+
+    public int[][]serveGameMap(int [] x)
+    {
+        x[0] = bomberList[0].getxPosition();
+        x[1] = bomberList[0].getyPosition();
+        x[2] = bomberList[1].getxPosition();
+        x[3] = bomberList[1].getyPosition();
+        x[4] = bomberList[2].getxPosition();
+        x[5] = bomberList[2].getyPosition();
+        x[6] = bomberList[3].getxPosition();
+        x[7] = bomberList[3].getyPosition();
+        return objectIntMap;
+    }
     /**
      * In singleplayer game, elapseTime method is called by GameManager to advance game
      * with directions of player
@@ -109,6 +128,9 @@ public class GameEngine
             dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
         }
         int pixelConstant = GRID_DIMENSION / 4;
+
+
+
         moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
 
         Random generator = new Random();
@@ -236,10 +258,15 @@ public class GameEngine
 
     }
 
-    public void addPowerUp(int x, int y)
+    public void changeWallType(Wall w)
     {
-        // TODO - implement GameEngine.addGameObject
-        throw new UnsupportedOperationException();
+        int xCoordinate = w.getxPosition();
+        int yCoordinate = w.getyPosition();
+
+        int xGrid = xCoordinate / GRID_DIMENSION;
+        int yGrid = yCoordinate / GRID_DIMENSION;
+
+        objectIntMap[xGrid][yGrid] = 1;
     }
 
     /**
@@ -278,6 +305,7 @@ public class GameEngine
             bombList.remove(object);
         }
         objectMap[xGrid][yGrid] = null;
+        objectIntMap[xGrid][yGrid] = 0;
 
     }
 
@@ -290,23 +318,85 @@ public class GameEngine
     private void moveBomberman(int index, int x, int y)
     {
         Bomberman b = bomberList[index];
-
-        b.move(x,y);
-
         int xCoordinate = b.getxPosition();
         int yCoordinate = b.getyPosition();
 
-        int xGrid = xCoordinate / GRID_DIMENSION;
-        int yGrid = yCoordinate / GRID_DIMENSION;
-
-        GameObject o = objectMap[xGrid][yGrid];
-
-        if(o instanceof PowerUp)
+        if(yCoordinate % GRID_DIMENSION < 10)
         {
-            ((PowerUp) o).beTaken(b);
-            return;
+            b.move(0, -1 * (yCoordinate % GRID_DIMENSION));
         }
-        b.move(x *(-1), y * (-1));
+        if(yCoordinate % GRID_DIMENSION > GRID_DIMENSION - 10)
+        {
+            b.move(0, GRID_DIMENSION - (yCoordinate % GRID_DIMENSION));
+        }
+        if(xCoordinate % GRID_DIMENSION < 10)
+        {
+            b.move(-1 * (xCoordinate % GRID_DIMENSION) , 0);
+        }
+        if((xCoordinate % GRID_DIMENSION) > GRID_DIMENSION - 10)
+        {
+            b.move(GRID_DIMENSION - (xCoordinate % GRID_DIMENSION) ,0);
+        }
+
+        b.move(x,y);
+
+        xCoordinate = b.getxPosition();
+        yCoordinate = b.getyPosition();
+
+        Point[] corners = new Point[4];
+
+
+        corners[0] = new Point(xCoordinate+2, yCoordinate+2);
+        corners[1] = new Point(xCoordinate+2, yCoordinate + 38);
+        corners[2] = new Point(xCoordinate + 38, yCoordinate+2);
+        corners[3] = new Point(xCoordinate + 38 , yCoordinate + 38);
+
+        for(int i = 0; i < 4 ; i ++)
+        {
+            GameObject o = objectMap[corners[i].x / GRID_DIMENSION ][corners[i].y / GRID_DIMENSION];
+            if(o != null)
+            {
+                if( o instanceof Wall)
+                    b.move(x *(-1), y * (-1));
+                if( o instanceof PowerUp)
+                {
+                    ((PowerUp) o).beTaken(b);
+                    deleteGameObject(o);
+                }
+
+                return;
+            }
+        }
+        /*Bomberman b = bomberList[index];
+
+        b.move(x,y);
+
+        Point[] corners = new Point[4];
+        int xCoordinate = b.getxPosition();
+        int yCoordinate = b.getyPosition();
+
+        corners[0] = new Point(xCoordinate+2, yCoordinate+2);
+        corners[1] = new Point(xCoordinate+2, yCoordinate + 38);
+        corners[2] = new Point(xCoordinate + 38, yCoordinate+2);
+        corners[3] = new Point(xCoordinate + 38 , yCoordinate + 38);
+
+        for(int i = 0; i < 4 ; i ++)
+        {
+            GameObject o = objectMap[corners[i].x / GRID_DIMENSION ][corners[i].y / GRID_DIMENSION];
+            if(o != null)
+            {
+                if( o instanceof Wall)
+                    b.move(x *(-1), y * (-1));
+                if( o instanceof PowerUp)
+                {
+                    ((PowerUp) o).beTaken(b);
+                    deleteGameObject(o);
+                }
+
+                return;
+            }
+        }
+        */
 
     }
 
@@ -318,17 +408,59 @@ public class GameEngine
      */
     private void dropBomb( int x , int y, int owner)
     {
-        Bomb newBomb = new Bomb(x, y, owner);
-        bombList.add(newBomb);
+        int count = 0;
+        for(int i = 0 ; i < bombList.size() ; i++)
+            if (bombList.get(i).getOwner() == owner)
+                count++;
 
-        int xGrid = x / GRID_DIMENSION;
-        int yGrid = y / GRID_DIMENSION;
+        if(count < bomberList[owner].getBombLimit())
+        {
+            Bomb newBomb = new Bomb(x, y, owner);
+            bombList.add(newBomb);
 
-        objectMap[xGrid][yGrid] = newBomb;
+            int xGrid = x / GRID_DIMENSION;
+            int yGrid = y / GRID_DIMENSION;
 
+            objectMap[xGrid][yGrid] = newBomb;
+            objectIntMap[xGrid][yGrid] = 4 + owner;
+        }
 
     }
 
+    public void dropPowerUp( int x , int y)
+    {
+        Random generator = new Random();
+        int dropOrNot =  generator.nextInt( 2 );
+
+        if(dropOrNot == 1)
+        {
+            int type =  generator.nextInt( 4 );
+            PowerUp newPowerUp;
+            if(type == 0)
+            {
+                newPowerUp = new Shield(x,y);
+            }
+            else if(type == 1)
+            {
+                newPowerUp = new SpeedUp(x,y);
+            }
+            else if(type == 2)
+            {
+                newPowerUp = new LimitUp(x,y);
+            }
+            else
+            {
+                newPowerUp = new MagnitudeUp(x,y);
+            }
+
+            int xGrid = x / GRID_DIMENSION;
+            int yGrid = y / GRID_DIMENSION;
+
+            objectMap[xGrid][yGrid] = newPowerUp;
+            objectIntMap[xGrid][yGrid] = type + 8;
+        }
+
+    }
     /**
      * explodeBomb method is called whenever a bomb is exploded, it process the object nearby for explosion
      * @param bomb is the bomb exploded
@@ -351,6 +483,10 @@ public class GameEngine
 
         int xGrid = xCoordinate / GRID_DIMENSION;
         int yGrid = yCoordinate / GRID_DIMENSION;
+
+        objectMap[xGrid][yGrid] = null;
+        objectIntMap[xGrid][yGrid] = 0;
+        bombList.remove(bomb);
 
         //left direction
         for(int i = 1 ; i <= magnitude ; i++)

@@ -21,7 +21,7 @@ public class Bomb extends GameObject
         xPosition = x;
         yPosition = y;
         this.owner = owner;
-        timeLeft = 3;
+        timeLeft = 120;
     }
 
     /**
