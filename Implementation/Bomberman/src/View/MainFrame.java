@@ -43,7 +43,7 @@ public class MainFrame extends JFrame
         mainMenuPanel = new MainMenuPanel();
         settingsPanel = new SettingsPanel();
         helpPanel = new HelpPanel();
-        highScoresPanel = new HighScoresPanel();
+        highScoresPanel = new HighScoresPanel(gManager);
         creditsPanel = new CreditsPanel();
 
 
