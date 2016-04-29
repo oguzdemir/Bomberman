@@ -5,6 +5,8 @@ import java.awt.*;
 
 /**
  * Created by od on 28.4.2016.
+ *
+ * Revised by Anil Sert on 29.4.2016
  */
 public class CreditsPanel extends InfoPanel
 {
@@ -12,9 +14,9 @@ public class CreditsPanel extends InfoPanel
     {
         super("Credits  ");
 
-        JTextArea text = new JTextArea("Oguz Demir - oguz.demir@ug.bilkent.edu.tr\n" +
+        JTextArea text = new JTextArea("Oguz Demir - oguz.demir (at) ug.bilkent.edu.tr\n" +
                 "Kaan Kale - \n" +
-                "Anil Sert - anil.sert@ug.bilkent.edu.tr\n");
+                "Anil Sert - anil.sert (at) ug.bilkent.edu.tr\n");
 
 
         text.setSize(new Dimension(900,900));
