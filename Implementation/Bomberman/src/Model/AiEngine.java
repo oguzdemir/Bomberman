@@ -32,7 +32,6 @@ public class AiEngine
         else if (busyWait == 0)
         {
             busyWait--;
-            System.out.println("Go on action!");
             directions[0] = -preX;
             directions[1] = -preY;
             directions[2] = 0;
@@ -40,7 +39,6 @@ public class AiEngine
             return directions;
         } else
         {
-            System.out.println("Waiting");
             busyWait--;
             directions[0] = 0;
             directions[1] = 0;
@@ -61,7 +59,6 @@ public class AiEngine
         directions[2] = 0;
         if(given)
         {
-            System.out.println("COUNT = " + count);
             if (count == 0)
             {
                 directions[0] *= -1;
@@ -87,7 +84,6 @@ public class AiEngine
                 directions[0] = directions[1];
                 directions[1] = temp;
                 count--;
-                System.out.println("Direction1: " + directions[0] + " && Direction2: " + directions[1]  );
             }
         }
 

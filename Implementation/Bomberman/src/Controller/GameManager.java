@@ -42,7 +42,6 @@ public class GameManager {
 
         fManager = new FileManager();
         //sManager = new SoundManager();
-        //loadLevel(currentLevel);
         frame = MainFrame.getInstance(this, gEngine);
         frame.setVisible( true );
         /*
@@ -65,6 +64,11 @@ public class GameManager {
         if(instance == null)
             instance = new GameManager();
         return instance;
+    }
+
+    public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo)
+    {
+        frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,currentScore);
     }
 
     /**
@@ -97,7 +101,7 @@ public class GameManager {
         int size = gameData.length;
        // boolean twoPlayer = getGameState() == 2; // Two player state = 2
         boolean twoPlayer = false;
-        gEngine = new GameEngine(gameData, size, twoPlayer);
+        gEngine = new GameEngine(gameData, size, twoPlayer,this);
     }
 
     /**
@@ -179,6 +183,7 @@ public class GameManager {
         boolean dropBomb = directions[2] == 1;
 
         gEngine.elapseTime(directions[0], directions[1], dropBomb);
+
     }
 
     /**
@@ -214,6 +219,11 @@ public class GameManager {
     public void changeGameStatus (int status)
     {
         gameState = status;
+        if(status == 1)
+        {
+            loadLevel(currentLevel);
+        }
+        frame.startGame();
         frame.updateStatusView(status);
     }
 
