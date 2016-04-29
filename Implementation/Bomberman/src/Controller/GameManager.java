@@ -105,20 +105,20 @@ public class GameManager {
      * user name and new high score and update the list with the help of
      * Controller.FileManager.
      */
-   /* public void registerHighScores ()
+    public void registerHighScores ()
     {
         fManager.setHighScores (highScores);
     }
-*/
+
     /**
      * Called by the View.MainFrame to get high scores data.
      *
      * @return high scores String representation.
      */
-    /*public String getHighScores ()
+    public String getHighScores ()
     {
         return fManager.loadHighScores();
-    }*/
+    }
 
     /**
      * Called by the View.MainFrame to get settings data.
@@ -135,10 +135,10 @@ public class GameManager {
      *
      * @param scores changed high scores String representation.
      */
-    /*public void updateHighScores (String scores)
+    public void updateHighScores (String scores)
     {
         String[] scoreList = getHighScores().split(" ");
-        String newName = scores.split(" ")[0]
+        String newName = scores.split(" ")[0];
         String newScore = scores.split(" ")[1];
         String newHighScores = "";
 
@@ -157,7 +157,7 @@ public class GameManager {
 
         highScores = newHighScores;
     }
-*/
+
     /**
      * Update settings with using the Controller.FileManager.
      *

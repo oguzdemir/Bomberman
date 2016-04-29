@@ -42,7 +42,7 @@ public class MainFrame extends JFrame
         gamePanel = new GamePanel(gManager,gEngine);
         settingsPanel = new SettingsPanel();
         helpPanel = new HelpPanel();
-        highScoresPanel = new HighScoresPanel();
+        highScoresPanel = new HighScoresPanel(gManager);
         creditsPanel = new CreditsPanel();
 
 

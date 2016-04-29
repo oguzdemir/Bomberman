@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Credits screen.
+ *
  * Created by od on 28.4.2016.
  *
- * Revised by Anil Sert on 29.4.2016
+ * Revised by Anıl Sert on 29.4.2016
  */
 public class CreditsPanel extends InfoPanel
 {
