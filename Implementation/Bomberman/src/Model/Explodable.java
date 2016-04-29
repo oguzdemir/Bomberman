@@ -7,5 +7,5 @@ package Model;
  */
 public interface Explodable
 {
-    void beExploded(GameEngine engine);
+    void beExploded(GameEngine engine, int owner);
 }

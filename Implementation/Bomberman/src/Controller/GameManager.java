@@ -20,6 +20,7 @@ public class GameManager {
     private int gameState;
     private int soundLevel;
     private int musicLevel;
+    private boolean currentlyPlaying;
 
     private String musicAdr;
     private String highScores;
@@ -44,6 +45,7 @@ public class GameManager {
         //sManager = new SoundManager();
         frame = MainFrame.getInstance(this, gEngine);
         frame.setVisible( true );
+        currentlyPlaying = false;
         /*
         String settings = fManager.loadSettings();
 
@@ -66,9 +68,9 @@ public class GameManager {
         return instance;
     }
 
-    public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo)
+    public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo,int []scores)
     {
-        frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,currentScore);
+        frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,scores[0]);
     }
 
     /**
@@ -96,7 +98,7 @@ public class GameManager {
      */
     public void loadLevel (int levelNo)
     {
-        currentLevel = levelNo;
+        currentLevel++;
         int[][] gameData = fManager.getGameData(levelNo);
         int size = gameData.length;
        // boolean twoPlayer = getGameState() == 2; // Two player state = 2
@@ -182,7 +184,15 @@ public class GameManager {
     {
         boolean dropBomb = directions[2] == 1;
 
-        gEngine.elapseTime(directions[0], directions[1], dropBomb);
+        int result = gEngine.elapseTime(directions[0], directions[1], dropBomb);
+        if(result == 1)
+        {
+            changeGameStatus(9);
+        }
+        if(result == 2)
+        {
+            changeGameStatus(10);
+        }
 
     }
 
@@ -218,13 +228,34 @@ public class GameManager {
      */
     public void changeGameStatus (int status)
     {
-        gameState = status;
-        if(status == 1)
-        {
-            loadLevel(currentLevel);
+
+        switch (status) {
+            case 0:
+                currentlyPlaying = false;
+                break;
+            case 1:
+                if(!currentlyPlaying)
+                    loadLevel(currentLevel);
+                frame.startGame();
+                currentlyPlaying = true;
+                break;
+            case 2:
+                if(!currentlyPlaying)
+                    loadLevel(currentLevel);
+                frame.startGame();
+                currentlyPlaying = true;
+                break;
+            case 9:
+                currentlyPlaying = false;
+                break;
+            case 10:
+                currentlyPlaying = false;
+                break;
         }
-        frame.startGame();
+        gameState = status;
+
         frame.updateStatusView(status);
+
     }
 
     public int getCurrentLevel() {

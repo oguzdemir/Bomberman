@@ -15,10 +15,11 @@ public class Wall  extends GameObject
         this.type = type;
 
     }
-    public void beExploded(GameEngine engine)
+    public void beExploded(GameEngine engine, int owner)
     {
         if(type == 1)
         {
+            engine.addScore(owner,50);
             engine.deleteGameObject(this);
             engine.dropPowerUp(xPosition,yPosition);
         }

@@ -109,6 +109,30 @@ public class MainFrame extends JFrame
             case 6:
                 getContentPane().add(creditsPanel);
                 break;
+            case 7:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.showPause();
+                break;
+            case 8:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.endGame();
+                break;
+            case 9:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.endLevel(false);
+                break;
+            case 10:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.endLevel(true);
+                break;
             default:
                 break;
         }
