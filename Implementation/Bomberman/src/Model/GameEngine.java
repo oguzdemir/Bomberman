@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.GameManager;
+import View.MainFrame;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,6 +13,7 @@ import java.util.Random;
 public class GameEngine
 {
     //Properties
+    private GameManager gManager;
     private Bomberman[] bomberList;
     private ArrayList<Bomb> bombList;
     private ArrayList<Wall> wallList;
@@ -21,6 +25,7 @@ public class GameEngine
     private boolean gameState;
     private boolean twoPlayers;
 
+
     AiEngine e2,e3,e4;
     private static final int GRID_DIMENSION = 40;
     //Constructor
@@ -28,8 +33,9 @@ public class GameEngine
     Constructor called by Controller.GameManager with 2D array holding the wall map and the dimension size.
     Also, gametype is given with a boolean
      */
-    public GameEngine(int[][] map, int n, boolean twoPlayers)
+    public GameEngine(int[][] map, int n, boolean twoPlayers, GameManager gManager)
     {
+        this.gManager = gManager;
         //Initializing the collections
         bomberList = new Bomberman[4];
         bombList = new ArrayList<Bomb>();
@@ -97,17 +103,36 @@ public class GameEngine
     }
 
 
-    public int[][]serveGameMap(int [] x)
+    public void serveGameMap()
     {
-        x[0] = bomberList[0].getxPosition();
-        x[1] = bomberList[0].getyPosition();
-        x[2] = bomberList[1].getxPosition();
-        x[3] = bomberList[1].getyPosition();
-        x[4] = bomberList[2].getxPosition();
-        x[5] = bomberList[2].getyPosition();
-        x[6] = bomberList[3].getxPosition();
-        x[7] = bomberList[3].getyPosition();
-        return objectIntMap;
+        int[] drawData = new int[12];
+
+        drawData[0] = bomberList[0].getxPosition();
+        drawData[1] = bomberList[0].getyPosition();
+        drawData[2] = bomberList[0].getShield();
+        drawData[3] = bomberList[1].getxPosition();
+        drawData[4] = bomberList[1].getyPosition();
+        drawData[5] = bomberList[1].getShield();
+        drawData[6] = bomberList[2].getxPosition();
+        drawData[7] = bomberList[2].getyPosition();
+        drawData[8] = bomberList[2].getShield();
+        drawData[9] = bomberList[3].getxPosition();
+        drawData[10] = bomberList[3].getyPosition();
+        drawData[11] = bomberList[3].getShield();
+
+
+        int [] infoData = new int[8];
+        infoData[0] = bomberList[0].getLives();
+        infoData[1] = bomberList[0].getSpeed();
+        infoData[2] = bomberList[0].getBombLimit();
+        infoData[3] = bomberList[0].getBombMagnitude();
+        infoData[4] = bomberList[3].getLives();
+        infoData[5] = bomberList[3].getBombLimit();
+        infoData[6] = bomberList[3].getSpeed();
+        infoData[7] = bomberList[3].getBombMagnitude();
+
+        gManager.updateGameView(objectIntMap,drawData,infoData);
+
     }
     /**
      * In singleplayer game, elapseTime method is called by Controller.GameManager to advance game
@@ -186,7 +211,7 @@ public class GameEngine
             e4.bombPlaced(b);
         }
 
-
+        serveGameMap();
 /*
 
         a = e3.getDirections();

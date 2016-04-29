@@ -15,18 +15,22 @@ import java.util.Random;
 /**
  * Created by od on 27.4.2016.
  */
-public class GamePanel extends JPanel implements KeyListener
+public class GamePanel extends JPanel
 {
     Timer timer;
 
-    int delay = 1;
+    int delay = 20;
     int [] directions1;
     int [] directions2 = new int[3];
     private GameManager gManager;
     private GameEngine gEngine;
 
+    int[][] gameMap;
+    int[] bomberMap;
+
     private final static int GRID_SIZE = 13;
-    private BufferedImage c1;
+    private BufferedImage c1,c2,c3,c4;
+    private BufferedImage c1s,c2s,c3s,c4s;
     private BufferedImage b1,b2,b3,b4;
     private BufferedImage w1,w2,w3;
     private BufferedImage p1,p2,p3,p4;
@@ -35,8 +39,16 @@ public class GamePanel extends JPanel implements KeyListener
         gManager = manager;
         gEngine = engine;
         setBackground(new Color(255,255,255));
-        setPreferredSize(new Dimension(1000,1000));
+        setPreferredSize(new Dimension(400,400));
+        //setLocation(100,100);
+        setLayout(null);
         setMaximumSize(getPreferredSize());
+
+        addKeyListener(new KeyboardListener());
+
+        setFocusable(true);
+        requestFocusInWindow(true);
+
 
 
         directions1 = new int[3];
@@ -49,6 +61,13 @@ public class GamePanel extends JPanel implements KeyListener
 
         try {
             c1 = ImageIO.read(new File("src/Sources/img/c1.png"));
+            c2 = ImageIO.read(new File("src/Sources/img/c2.png"));
+            c3 = ImageIO.read(new File("src/Sources/img/c3.png"));
+            c4 = ImageIO.read(new File("src/Sources/img/c4.png"));
+            c1s = ImageIO.read(new File("src/Sources/img/c1-shield.png"));
+            c2s = ImageIO.read(new File("src/Sources/img/c2-shield.png"));
+            c3s = ImageIO.read(new File("src/Sources/img/c3-shield.png"));
+            c4s = ImageIO.read(new File("src/Sources/img/c4-shield.png"));
             b1 = ImageIO.read(new File("src/Sources/img/b1.png"));
             b2 = ImageIO.read(new File("src/Sources/img/b2.png"));
             b3 = ImageIO.read(new File("src/Sources/img/b3.png"));
@@ -63,111 +82,152 @@ public class GamePanel extends JPanel implements KeyListener
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
 
+    public void pauseGame()
+    {
+        timer.stop();
+    }
+    public void startGame()
+    {
+        timer.start();
+    }
 
-
-
+    public void update(int[][] map, int[]data)
+    {
+        gameMap = map;
+        bomberMap = data;
         repaint();
     }
-
-    public void keyTyped(KeyEvent e)
+    private class KeyboardListener implements KeyListener
     {
-        return;
-    }
-    public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        switch( keyCode ) {
-            case KeyEvent.VK_UP:
-                directions1[1] = -1;
-                break;
-            case KeyEvent.VK_DOWN:
-                directions1[1] = 1;
-                // handle down
-                break;
-            case KeyEvent.VK_LEFT:
-                directions1[0] = -1;
-                // handle left
-                break;
-            case KeyEvent.VK_RIGHT :
-                directions1[0] = 1;
-                // handle right
-                break;
-            case KeyEvent.VK_SPACE :
-                directions1[2] = 1;
-                // handle right
-                break;
+        @Override
+        public void keyTyped(KeyEvent e)
+        {
+            return;
         }
-    }
-    public void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        switch( keyCode ) {
-            case KeyEvent.VK_UP:
-                directions1[1] = 0;
-                break;
-            case KeyEvent.VK_DOWN:
-                directions1[1] = 0;
-                // handle down
-                break;
-            case KeyEvent.VK_LEFT:
-                directions1[0] = 0;
-                // handle left
-                break;
-            case KeyEvent.VK_RIGHT :
-                directions1[0] = 0;
-                // handle right
-                break;
 
+        @Override
+        public void keyPressed(KeyEvent e)
+        {
+            int keyCode = e.getKeyCode();
+            switch (keyCode)
+            {
+                case KeyEvent.VK_UP:
+                    directions1[1] = -1;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    directions1[1] = 1;
+                    // handle down
+                    break;
+                case KeyEvent.VK_LEFT:
+                    directions1[0] = -1;
+                    // handle left
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    directions1[0] = 1;
+                    // handle right
+                    break;
+                case KeyEvent.VK_SPACE:
+                    directions1[2] = 1;
+                    // handle right
+                    break;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e)
+        {
+            int keyCode = e.getKeyCode();
+            switch (keyCode)
+            {
+                case KeyEvent.VK_UP:
+                    directions1[1] = 0;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    directions1[1] = 0;
+                    // handle down
+                    break;
+                case KeyEvent.VK_LEFT:
+                    directions1[0] = 0;
+                    // handle left
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    directions1[0] = 0;
+                    // handle right
+                    break;
+
+            }
         }
     }
+
 
     public void paintComponent(Graphics g)
     {
+
         super.paintComponent(g);
+        if(gameMap == null)
+            return;
         Graphics2D g2d = (Graphics2D) g.create();
 
         int xCoordinate = 0;
         int yCoordinate = 0;
-
-        int [] bombers = new int[8];
-        int[][] abc = gEngine.serveGameMap(bombers);
-
 
 
         for(int i = 0; i < GRID_SIZE ; i++)
         {
             for(int j = 0 ; j < GRID_SIZE ; j++)
             {
-                if( abc[i][j] == 1)
+                if( gameMap[i][j] == 1)
                     g2d.drawImage(w1,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 2)
+                if( gameMap[i][j] == 2)
                     g2d.drawImage(w2,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 3)
+                if( gameMap[i][j] == 3)
                     g2d.drawImage(w3,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 4)
+                if( gameMap[i][j] == 4)
                     g2d.drawImage(b1,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 5)
+                if( gameMap[i][j] == 5)
                     g2d.drawImage(b2,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 6)
+                if( gameMap[i][j] == 6)
                     g2d.drawImage(b3,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 7)
+                if( gameMap[i][j] == 7)
                     g2d.drawImage(b4,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 8)
+                if( gameMap[i][j] == 8)
                     g2d.drawImage(p1,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 9)
+                if( gameMap[i][j] == 9)
                     g2d.drawImage(p2,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 10)
+                if( gameMap[i][j] == 10)
                     g2d.drawImage(p3,xCoordinate,yCoordinate,40,40,Color.gray,null);
-                if( abc[i][j] == 11)
+                if( gameMap[i][j] == 11)
                     g2d.drawImage(p4,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 yCoordinate += 40;
             }
-            g2d.drawImage(c1,bombers[0],bombers[1],40,40,Color.gray,null);
-            g2d.drawImage(c1,bombers[2],bombers[3],40,40,Color.gray,null);
-            g2d.drawImage(c1,bombers[4],bombers[5],40,40,Color.gray,null);
-            g2d.drawImage(c1,bombers[6],bombers[7],40,40,Color.gray,null);
+
+
+
+
             xCoordinate += 40;
             yCoordinate = 0;
         }
+
+        if(bomberMap[2]>0)
+            g2d.drawImage(c1s,bomberMap[0],bomberMap[1],40,40,Color.white,null);
+        else
+            g2d.drawImage(c1,bomberMap[0],bomberMap[1],40,40,Color.white,null);
+
+        if(bomberMap[5]>0)
+            g2d.drawImage(c2s,bomberMap[3],bomberMap[4],40,40,Color.white,null);
+        else
+            g2d.drawImage(c2,bomberMap[3],bomberMap[4],40,40,Color.white,null);
+
+        if(bomberMap[8]>0)
+            g2d.drawImage(c3s,bomberMap[6],bomberMap[7],40,40,Color.white,null);
+        else
+            g2d.drawImage(c3,bomberMap[6],bomberMap[7],40,40,Color.white,null);
+        if(bomberMap[11]>0)
+            g2d.drawImage(c4s,bomberMap[9],bomberMap[10],40,40,Color.white,null);
+        else
+            g2d.drawImage(c1,bomberMap[9],bomberMap[10],40,40,Color.white,null);
     }
 
 
@@ -180,7 +240,6 @@ public class GamePanel extends JPanel implements KeyListener
             gManager.controlPlayer(directions1);
 
             directions1[2] = 0;
-            repaint();
 
            /* for(int i = 0; i< 3 ; i++)
                 directions1[i] = 0;*/

@@ -16,12 +16,14 @@ public class MainFrame extends JFrame
     private GameEngine gEngine;
 
     private MainMenuPanel mainMenuPanel;
+    private JPanel gameContainer;
     private GamePanel gamePanel;
     private SettingsPanel settingsPanel;
     private HelpPanel helpPanel;
     private HighScoresPanel highScoresPanel;
     private CreditsPanel creditsPanel;
-
+    private GameInfoPanel infop1,infop2;
+    private GameInfoHeaderPanel hudPanel;
 
     private MainFrame(GameManager manager, GameEngine engine)
     {
@@ -39,12 +41,24 @@ public class MainFrame extends JFrame
 
 
         mainMenuPanel = new MainMenuPanel();
-        gamePanel = new GamePanel(gManager,gEngine);
         settingsPanel = new SettingsPanel();
         helpPanel = new HelpPanel();
         highScoresPanel = new HighScoresPanel(gManager);
         creditsPanel = new CreditsPanel();
 
+
+        gameContainer = new JPanel();
+        gamePanel = new GamePanel(gManager,gEngine);
+        infop1 = new GameInfoPanel(true);
+        infop2 = new GameInfoPanel(false);
+        hudPanel = new GameInfoHeaderPanel();
+
+
+        gameContainer.setLayout(new BorderLayout());
+        gameContainer.add(hudPanel,BorderLayout.PAGE_START);
+        gameContainer.add(infop1,BorderLayout.LINE_START);
+        gameContainer.add(gamePanel,BorderLayout.CENTER);
+        gameContainer.add(infop2,BorderLayout.LINE_END);
 
         add(mainMenuPanel);
 
@@ -54,6 +68,20 @@ public class MainFrame extends JFrame
         pack();//Size
 
     }
+    public void updateGameView(int[][] map, int[]bomberMap, int[]info,int currentLevel, int remainingTime, int currentScore )
+    {
+        gamePanel.update(map,bomberMap);
+        infop1.updateHUD(info[0],info[1],info[2],info[3] );
+        hudPanel.updateHUD(remainingTime,currentScore,currentLevel);
+    }
+    public void startGame()
+    {
+        gamePanel.startGame();
+    }
+    public void pauseGame()
+    {
+        gamePanel.pauseGame();
+    }
     public void updateStatusView(int status)
     {
         getContentPane().removeAll();
@@ -62,7 +90,9 @@ public class MainFrame extends JFrame
                 getContentPane().add(mainMenuPanel);
                 break;
             case 1:
-                getContentPane().add(gamePanel);
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
                 break;
             case 2:
                 getContentPane().add(gamePanel);

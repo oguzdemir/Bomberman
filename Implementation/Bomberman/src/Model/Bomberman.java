@@ -17,6 +17,7 @@ public class Bomberman extends GameObject implements Explodable
     private int bombMagnitude;
     private int shield;
 
+
     /**
      * Create a Model.Bomberman instance with the given position values.
      *
@@ -29,6 +30,7 @@ public class Bomberman extends GameObject implements Explodable
         xPosition = x;
         yPosition = y;
         this.id = id;
+
         lives = 2;
         speed = 1;
         bombLimit = 1;
@@ -60,6 +62,16 @@ public class Bomberman extends GameObject implements Explodable
             shield = 0;*/
     }
 
+    public int getLives()
+    {
+        return lives;
+    }
+
+    public int getShield()
+    {
+        return shield;
+    }
+
     /**
      * Move the bomberman to the desired location.
      *
@@ -81,7 +93,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void giveShield ()
     {
-        shield = 3;
+        shield = 300;
     }
 
     /**
