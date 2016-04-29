@@ -81,4 +81,43 @@ public class FileManager
         newFile.renameTo(oldFile);
     }
 
+    /**
+     * Load settings from the settings file.
+     * @return settings string representation.
+     */
+    public String loadSettings()
+    {
+        String settings = "";
+        String name = "src/Sources/settings.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(name))) {
+            settings = br.readLine();
+        }
+        catch(IOException e)
+        {
+            System.out.println("File cannot be opened");
+        }
+        return settings;
+    }
+
+    /**
+     * Change the settings file with the new one.
+     * @param settings new settings.
+     */
+    public void saveSettings(String settings)
+    {
+        String name = "src/Sources/settings_tmp.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(name))) {
+            bw.write(settings);
+        }
+        catch(IOException e)
+        {
+            System.out.println("File cannot be opened");
+        }
+        File newFile = new File("src/Sources/settings_tmp.txt");
+        File oldFile = new File("src/Sources/settings.txt");
+
+        oldFile.delete();
+        newFile.renameTo(oldFile);
+    }
+
 }
