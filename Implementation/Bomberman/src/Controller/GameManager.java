@@ -20,13 +20,15 @@ public class GameManager {
     private int gameState;
     private int soundLevel;
     private int musicLevel;
+    private boolean bgOn;
+    private boolean soundOn;
 
     private String musicAdr;
     private String highScores;
     private GameEngine gEngine;
     private MainFrame frame;
     private FileManager fManager;
-   // private SoundManager sManager;
+    private SoundManager sManager;
 
     /**
      * Initializes the Controller.GameManager object with default properties and
@@ -44,13 +46,13 @@ public class GameManager {
         //sManager = new SoundManager();
         frame = MainFrame.getInstance(this, gEngine);
         frame.setVisible( true );
-        /*
+
         String settings = fManager.loadSettings();
 
-        soundLevel =
-        musicLevel =
-        musicAdr =
-        */
+        bgOn = Boolean.parseBoolean(settings.split(" ")[0]);
+        soundOn = Boolean.parseBoolean(settings.split(" ")[1]);
+        soundLevel = Integer.parseInt(settings.split(" ")[2]);
+        musicLevel = Integer.parseInt(settings.split(" ")[2]);
     }
 
     /**
@@ -129,10 +131,10 @@ public class GameManager {
      *
      * @return settings String representation.
      */
-    /*public String getSettings ()
+    public String getSettings ()
     {
         return fManager.loadSettings ();
-    }*/
+    }
 
     /**
      * Update high scores string.
@@ -167,10 +169,10 @@ public class GameManager {
      *
      * @param settings changed settings String representation.
      */
-    /*public void updateSettings (String settings)
+    public void updateSettings (String settings)
     {
         fManager.saveSettings (settings);
-    }*/
+    }
 
     /**
      * Single player version of controlling players.
@@ -299,11 +301,11 @@ public class GameManager {
         this.fManager = fManager;
     }
 
-   /* public SoundManager getsManager() {
+    public SoundManager getsManager() {
         return sManager;
     }
 
     public void setsManager(SoundManager sManager) {
         this.sManager = sManager;
-    }*/
+    }
 }
