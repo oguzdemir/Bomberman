@@ -41,11 +41,7 @@ public class GameManager {
         currentScore = 0;
         gameState = 0; // Main menu state is 0
 
-
         fManager = new FileManager();
-        //sManager = new SoundManager();
-        frame = MainFrame.getInstance(this, gEngine);
-        frame.setVisible( true );
 
         String settings = fManager.loadSettings();
 
@@ -53,6 +49,11 @@ public class GameManager {
         soundOn = Boolean.parseBoolean(settings.split(" ")[1]);
         soundLevel = Integer.parseInt(settings.split(" ")[2]);
         musicLevel = Integer.parseInt(settings.split(" ")[2]);
+
+
+        //sManager = new SoundManager();
+        frame = MainFrame.getInstance(this, gEngine);
+        frame.setVisible( true );
     }
 
     /**
@@ -307,5 +308,21 @@ public class GameManager {
 
     public void setsManager(SoundManager sManager) {
         this.sManager = sManager;
+    }
+
+    public boolean isBgOn() {
+        return bgOn;
+    }
+
+    public void setBgOn(boolean bgOn) {
+        this.bgOn = bgOn;
+    }
+
+    public boolean isSoundOn() {
+        return soundOn;
+    }
+
+    public void setSoundOn(boolean soundOn) {
+        this.soundOn = soundOn;
     }
 }

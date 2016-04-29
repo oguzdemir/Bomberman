@@ -39,6 +39,6 @@ public class SoundManager {
 
     public void playSound(int situation, int volume)
     {
-        
+
     }
 }
