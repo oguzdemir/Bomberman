@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public abstract class InfoPanel extends JPanel
 {
-    Font customFont,customFont2;
+    Font customFont,customFont2, customFont3;
 
     public InfoPanel(String title)
     {
@@ -27,6 +27,7 @@ public abstract class InfoPanel extends JPanel
             //create the font to use. Specify the size!
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Sources/fonts/Bombing.ttf")).deriveFont(30f);
             customFont2 = Font.createFont(Font.TRUETYPE_FONT, new File("src/Sources/fonts/Bombing.ttf")).deriveFont(180f);
+            customFont3 = Font.createFont(Font.TRUETYPE_FONT, new File("src/Sources/fonts/Bombing.ttf")).deriveFont(60f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Sources/fonts/Bombing.ttf")));
