@@ -56,7 +56,7 @@ public class MainFrame extends JFrame
     }
     public void updateStatusView(int status)
     {
-        getContentPane().removeAll();g
+        getContentPane().removeAll();
         switch (status) {
             case 0:
                 getContentPane().add(mainMenuPanel);
