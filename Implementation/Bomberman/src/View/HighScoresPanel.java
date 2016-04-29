@@ -29,7 +29,6 @@ public class HighScoresPanel extends InfoPanel
 
         for (int i = 0; i < scores.length/2; i++)
         {
-            System.out.println(scores[i]);
             data[i][0] = scores[2 * i];
             data[i][1] = scores[2 * i + 1];
         }
