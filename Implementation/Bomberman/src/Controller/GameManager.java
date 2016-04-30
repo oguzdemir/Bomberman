@@ -51,9 +51,11 @@ public class GameManager {
         musicLevel = Integer.parseInt(settings.split(" ")[2]);
 
 
-        //sManager = new SoundManager();
+        sManager = new SoundManager();
         frame = MainFrame.getInstance(this, gEngine);
         frame.setVisible( true );
+
+        sManager.playBackgroundMusic(5);
     }
 
     /**
