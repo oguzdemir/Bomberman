@@ -48,7 +48,7 @@ public class MainFrame extends JFrame
 
 
         gameContainer = new JPanel();
-        gamePanel = new GamePanel(gManager,gEngine);
+        gamePanel = new GamePanel(gManager);
         infop1 = new GameInfoPanel(true);
         infop2 = new GameInfoPanel(false);
         hudPanel = new GameInfoHeaderPanel();

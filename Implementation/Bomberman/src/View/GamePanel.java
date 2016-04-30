@@ -24,7 +24,6 @@ public class GamePanel extends JPanel
     int [] directions1;
     int [] directions2;
     private GameManager gManager;
-    private GameEngine gEngine;
 
     int[][] gameMap;
     int[] bomberMap;
@@ -37,10 +36,9 @@ public class GamePanel extends JPanel
     private BufferedImage p1,p2,p3,p4;
 
 
-    public GamePanel(GameManager manager, GameEngine engine)
+    public GamePanel(GameManager manager)
     {
         gManager = manager;
-        gEngine = engine;
         setBackground(new Color(255,255,255));
         setPreferredSize(new Dimension(400,400));
         //setLocation(100,100);
