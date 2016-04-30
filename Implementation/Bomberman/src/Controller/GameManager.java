@@ -30,6 +30,8 @@ public class GameManager {
     private boolean initialGame;
 
     private boolean currentlyPlaying;
+
+    private SoundManager click,explode,backgroundMusic;
     private boolean bgOn;
     private boolean soundOn;
     private int musicLevel;
@@ -39,7 +41,7 @@ public class GameManager {
     private GameEngine gEngine;
     private MainFrame frame;
     private FileManager fManager;
-    private SoundManager sManager;
+
 
     /**
      * Initializes the Controller.GameManager object with default properties and
@@ -63,9 +65,11 @@ public class GameManager {
         musicLevel = Integer.parseInt(settings.split(" ")[2]);
 
 
-        sManager = new SoundManager();
         frame = MainFrame.getInstance(this);
         frame.setVisible( true );
+
+        click= new SoundManager("click.wav");
+        explode = new SoundManager("explode.wav");
 
 
         currentlyPlaying = false;
@@ -174,6 +178,8 @@ public class GameManager {
      */
     public void changeGameStatus (int status,int result)
     {
+        if(soundOn)
+            click.play();
 
         switch (status) {
             case -1:
@@ -209,9 +215,13 @@ public class GameManager {
                 initialGame = false;
                 break;
             case 8:
+                if(soundOn)
+                    explode.play();
                 currentlyPlaying = false;
                 break;
             case 9:
+                if(soundOn)
+                    explode.play();
                 currentlyPlaying = false;
                 break;
         }
@@ -387,6 +397,17 @@ public class GameManager {
      */
     public void updateSettings (String settings)
     {
+        boolean b = bgOn;
+        bgOn = Boolean.parseBoolean(settings.split(" ")[0]);
+        soundOn = Boolean.parseBoolean(settings.split(" ")[1]);
+
+        musicLevel = Integer.parseInt(settings.split(" ")[2]);
+
+
+        /*click.changeVolume(musicLevel);
+        explode.changeVolume(musicLevel);
+        backgroundMusic.changeVolume(musicLevel);*/
+
         fManager.saveSettings (settings);
     }
 
@@ -457,14 +478,6 @@ public class GameManager {
 
     public void setfManager(FileManager fManager) {
         this.fManager = fManager;
-    }
-
-    public SoundManager getsManager() {
-        return sManager;
-    }
-
-    public void setsManager(SoundManager sManager) {
-        this.sManager = sManager;
     }
 
     public boolean isBgOn() {

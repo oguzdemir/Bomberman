@@ -1,43 +1,153 @@
 package Controller;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JLabel;
+import  sun.audio.*;    //import the sun.audio package
+import  java.io.*;
+import java.io.InputStream;
+import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import java.io.File;
-import java.nio.file.Paths;
+import javax.sound.sampled.DataLine;
 
-/**
- * Controller class for the sounds of the game.
- *
- * Created by Anıl Sert on 29.04.2016.
- */
-public class SoundManager {
-    private String backgroundMusic;
+class SoundManager{
 
-    public SoundManager ()
-    {
-        backgroundMusic = "http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv";
+    private  String resource;
+    private  String resource2;
+
+    private Clip clip;
+    private FloatControl gainControl;
+    public SoundManager(String resource) {
+        //gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        this.resource = resource;
+        this.resource2 = resource;
     }
 
-    public void playBackgroundMusic(int volume) {
-        MediaPlayer mp = new MediaPlayer(new Media(backgroundMusic));
-                    /*AudioInputStream inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(backgroundMusic));
-                    Clip clip = AudioSystem.getClip();
-                    Media
-                    clip.open(inputStream);
-                    FloatControl gainControl =
-                            (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                    gainControl.setValue(volume);
-                    clip.start();*/
-        mp.play();
+    public void changeVolume(int volume)
+    {
+        switch(volume)
+        {
+            /*case 1:
+                gainControl.setValue(-90.0f);
+                break;
+            case 2:
+                gainControl.setValue(-80.0f);
+                break;
+            case 3:
+                gainControl.setValue(-70.0f);
+                break;
+            case 4:
+                gainControl.setValue(-60.0f);
+                break;
+            case 5:
+                gainControl.setValue(-50.0f);
+                break;
+            case 6:
+                gainControl.setValue(-40.0f);
+                break;
+            case 7:
+                gainControl.setValue(-30.0f);
+                break;
+            case 8:
+                gainControl.setValue(-20.0f);
+                break;
+            case 9:
+                gainControl.setValue(-10.0f);
+                break;
+            case 10:
+                gainControl.setValue(0);
+                break;*/
+            default:
+                break;
+        }
+
     }
 
-    public void playSound(int situation, int volume)
-    {
+    public void stop() {
+        if(clip!= null)
+            clip.stop();
+    }
 
+
+    public void play() {
+        clip = null;
+        try {
+            InputStream in = SoundManager.class.getClassLoader().getResourceAsStream(resource);
+            if(in != null) {
+                AudioInputStream stream = AudioSystem.getAudioInputStream(in);
+                AudioFormat format = stream.getFormat();
+                DataLine.Info info = new DataLine.Info(Clip.class, format);
+                clip = (Clip) AudioSystem.getLine(info);
+                clip.open(stream);
+                clip.loop(0);
+                do  {
+                    try {
+                        Thread.sleep(100);
+                    } catch(InterruptedException iex) {
+                        // bad form on my part here. Should do somethinging
+                    }
+                } while(clip.isRunning());
+            }
+        } catch (Exception e) {
+            System.out.println("lol");
+        } finally {
+            try {
+                if(clip != null) {
+                    clip.close();
+                }
+            } catch(Exception x) {
+                x.printStackTrace(System.out);
+            }
+        }
+    }
+
+    public void play(boolean b) {
+        Clip clip = null;
+        try {
+            InputStream in = SoundManager.class.getClassLoader().getResourceAsStream(resource);
+            if(in != null) {
+                AudioInputStream stream = AudioSystem.getAudioInputStream(in);
+                AudioFormat format = stream.getFormat();
+                DataLine.Info info = new DataLine.Info(Clip.class, format);
+                clip = (Clip) AudioSystem.getLine(info);
+                clip.open(stream);
+                clip.loop(1);
+                do  {
+                    try {
+                        Thread.sleep(100);
+                    } catch(InterruptedException iex) {
+                        // bad form on my part here. Should do somethinging
+                    }
+                } while(clip.isRunning());
+            }
+        } catch (Exception e) {
+            System.out.println("lol");
+        } finally {
+            try {
+                if(clip != null) {
+                    clip.close();
+                }
+            } catch(Exception x) {
+                x.printStackTrace(System.out);
+            }
+        }
     }
 }
