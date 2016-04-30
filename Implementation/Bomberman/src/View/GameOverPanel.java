@@ -14,7 +14,7 @@ public class GameOverPanel extends JPanel
 {
     Font customFont;
     JTextField enterName;
-    public GameOverPanel(boolean b)
+    public GameOverPanel(int result)
     {
         super();
         setLayout(new GridLayout(3,1));
@@ -37,10 +37,18 @@ public class GameOverPanel extends JPanel
 
         JLabel endGame;
 
-        if(b)
-            endGame = new JLabel("GAME OVER, You have an high score! Enter your name to go on list! ");
-        else
-            endGame = new JLabel("GAME OVER, You are not highscored");
+        switch(result)
+        {
+            case 7: endGame = new JLabel("GAME OVER! Player 1 an high score! Enter your name to go on list! ");
+                break;
+            case 8: endGame = new JLabel("GAME OVER! Player 2 an high score! Enter your name to go on list! ");
+                break;
+            default:
+                endGame = new JLabel("GAME OVER, You are not highscored");
+                break;
+        }
+
+
         endGame.setFont(customFont);
         endGame.setSize(endGame.getPreferredSize());
         endGame.setForeground(Color.white);
@@ -49,7 +57,7 @@ public class GameOverPanel extends JPanel
         endGame.setOpaque(false);
 
 
-        if(b)
+        if(result==7 || result==8)
         {
             enterName = new JTextField("Enter Name");
             add(enterName);
@@ -58,7 +66,7 @@ public class GameOverPanel extends JPanel
 
         JButton mainMenu;
 
-        if(b)
+        if(result==7 || result==8)
         {
             mainMenu = new JButton("Save me and go on main menu!");
             mainMenu.addActionListener(new ActionListener()

@@ -93,53 +93,9 @@ public class GamePanel extends JPanel
 
 
     }
-    public void gameOver(boolean b)
-    {
-        pauseGame();
-        removeAll();
-        validate();
-
-
-
-        JPanel x = new GameOverPanel(b);
-        add(x);
-        x.setLocation(0,200);
-
-        repaint();
-    }
-
-    public void endGame()
-    {
-        pauseGame();
-        removeAll();
-        validate();
-
-
-
-        JPanel x = new EndPanel();
-        add(x);
-        x.setLocation(0,200);
-
-        repaint();
-    }
-    public void endLevel(boolean b)
-    {
-        pauseGame();
-        removeAll();
-        validate();
-
-
-
-        JPanel x = new EndPanel(b);
-        add(x);
-        x.setLocation(0,200);
-
-        repaint();
-    }
-
     public void showPause()
     {
-        pauseGame();
+        timer.stop();
         removeAll();
         validate();
 
@@ -151,10 +107,38 @@ public class GamePanel extends JPanel
 
         repaint();
     }
-    public void pauseGame()
+
+    public void endLevel(int result)
     {
         timer.stop();
+        removeAll();
+        validate();
+
+        JPanel x = new EndPanel(result);
+        add(x);
+        x.setLocation(0,200);
+
+        repaint();
     }
+
+
+    public void gameOver(int result)
+    {
+        timer.stop();
+        removeAll();
+        validate();
+
+
+        JPanel x = new GameOverPanel(result);
+        add(x);
+        x.setLocation(0,200);
+
+        repaint();
+    }
+
+
+
+
     public void startGame()
     {
         removeAll();
@@ -164,6 +148,12 @@ public class GamePanel extends JPanel
         timer.start();
     }
 
+    public void stopGame()
+    {
+        timer.start();
+    }
+
+
 
 
     public void update(int[][] map, int[]data)
@@ -172,6 +162,7 @@ public class GamePanel extends JPanel
         bomberMap = data;
         repaint();
     }
+
     private class KeyboardListener implements KeyListener
     {
         @Override
@@ -201,8 +192,27 @@ public class GamePanel extends JPanel
                     directions1[0] = 1;
                     // handle right
                     break;
-                case KeyEvent.VK_SPACE:
+                case KeyEvent.VK_NUMPAD0:
                     directions1[2] = 1;
+                    // handle right
+                    break;
+                case KeyEvent.VK_W:
+                    directions2[1] = -1;
+                    break;
+                case KeyEvent.VK_S:
+                    directions2[1] = 1;
+                    // handle down
+                    break;
+                case KeyEvent.VK_A:
+                    directions2[0] = -1;
+                    // handle left
+                    break;
+                case KeyEvent.VK_D:
+                    directions2[0] = 1;
+                    // handle right
+                    break;
+                case KeyEvent.VK_SPACE:
+                    directions2[2] = 1;
                     // handle right
                     break;
             }
@@ -227,6 +237,21 @@ public class GamePanel extends JPanel
                     break;
                 case KeyEvent.VK_RIGHT:
                     directions1[0] = 0;
+                    // handle right
+                    break;
+                case KeyEvent.VK_W:
+                    directions2[1] = 0;
+                    break;
+                case KeyEvent.VK_S:
+                    directions2[1] = 0;
+                    // handle down
+                    break;
+                case KeyEvent.VK_A:
+                    directions2[0] = 0;
+                    // handle left
+                    break;
+                case KeyEvent.VK_D:
+                    directions2[0] = 0;
                     // handle right
                     break;
 
@@ -305,7 +330,7 @@ public class GamePanel extends JPanel
             if(bomberMap[11]>0)
                 g2d.drawImage(c4s,bomberMap[9],bomberMap[10],40,40,Color.white,null);
             else
-                g2d.drawImage(c1,bomberMap[9],bomberMap[10],40,40,Color.white,null);
+                g2d.drawImage(c4,bomberMap[9],bomberMap[10],40,40,Color.white,null);
 
 
         /*
@@ -331,10 +356,10 @@ public class GamePanel extends JPanel
         {
             if(gManager == null)
                 System.out.println("Manager NUll");
-            gManager.controlPlayer(directions1);
+            gManager.controlPlayer(directions1,directions2);
 
             directions1[2] = 0;
-
+            directions2[2] = 0;
            /* for(int i = 0; i< 3 ; i++)
                 directions1[i] = 0;*/
 

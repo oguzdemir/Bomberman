@@ -72,4 +72,11 @@ public class GameInfoHeaderPanel extends JPanel
         scoreLabel.setText("Score: " + score);
         levelLabel.setText("Level: " + level);
     }
+
+    public void updateHUD(int time, int score1,int score2, int level)
+    {
+        timeLabel.setText("Time: " + (time/60)/60 + ":" + (time/60)%60 );
+        scoreLabel.setText(score1 + " vs " + score2 );
+        levelLabel.setText("Level: " + level);
+    }
 }

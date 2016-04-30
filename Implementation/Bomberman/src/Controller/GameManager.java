@@ -16,10 +16,18 @@ public class GameManager {
     // Local variables
     private int currentLevel;
     private int remainingTime;
-    private int currentScore;
+
+    private int currentScore1;
+    private int currentScore2;
+
     private int gameState;
+
     private int soundLevel;
     private int musicLevel;
+
+    private boolean twoPlayer;
+    private boolean initialGame;
+
     private boolean currentlyPlaying;
     private boolean bgOn;
     private boolean soundOn;
@@ -38,8 +46,11 @@ public class GameManager {
      */
     private GameManager ()
     {
+        initialGame = true;
         currentLevel = 1;
-        currentScore = 0;
+        currentScore1 = 0;
+        currentScore2 = 0;
+
         gameState = 0; // Main menu state is 0
 
         fManager = new FileManager();
@@ -79,11 +90,126 @@ public class GameManager {
         return instance;
     }
 
-    public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo,int []scores)
+    public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo, int []scores)
     {
-        currentScore += scores[0];
-        frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,currentScore);
+        currentScore1 += scores[0];
+        currentScore2 += scores[3];
+
+            frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,currentScore1,currentScore2, twoPlayer);
     }
+
+    /**
+     * Single player version of controlling players.
+     * Lets player to control the Model.Bomberman using Model.GameEngine.
+     *
+     * @param directions1 user input coming from View.MainFrame.
+     * @param directions2 user input coming from View.MainFrame.
+     */
+    public void controlPlayer (int[] directions1, int[] directions2 )
+    {
+        boolean dropBomb1 = directions1[2] == 1;
+        boolean dropBomb2 = directions2[2] == 1;
+
+        remainingTime--;
+
+        int result;
+        //SinglePlayer Game
+        if(!twoPlayer)
+            result = gEngine.elapseTime(directions1[0], directions1[1], dropBomb1);
+        else
+            result = gEngine.elapseTime(directions1[0], directions1[1], dropBomb1,directions2[0], directions2[1], dropBomb2 );
+
+        if(result != 0 )
+        {
+
+            if (currentLevel < 4)
+            {
+                changeGameStatus(8 , result);
+                currentLevel++;
+            }
+            else
+            {
+                if(twoPlayer)
+                {
+                    if(currentScore2 > currentScore1)
+                    {
+                        boolean b = checkHighScores(currentScore2);
+                        if(b)
+                            result = 8;
+                        else
+                            result = 3;
+                    }
+
+                    changeGameStatus(9,result);
+                    return;
+                }
+
+                boolean b = checkHighScores(currentScore1);
+                if(b)
+                    result = 7;
+                else
+                    result = 3;
+
+
+                changeGameStatus(9,result);
+
+            }
+        }
+    }
+
+    public void changeGameStatus (int status,int result)
+    {
+
+        switch (status) {
+            case -1:
+                currentLevel = 1;
+                currentScore1 = 0;
+                currentScore2 = 0;
+                initialGame = true;
+                changeGameStatus(0,0);
+                return;
+            case 0:
+                initialGame = true;
+                currentlyPlaying = false;
+                break;
+            case 1:
+                if(initialGame)
+                    twoPlayer = false;
+                if(!currentlyPlaying)
+                    loadLevel(currentLevel);
+                frame.startGame();
+                currentlyPlaying = true;
+                initialGame = false;
+                break;
+            case 2:
+                if(initialGame)
+                    twoPlayer = true;
+                if(!currentlyPlaying)
+                    loadLevel(currentLevel);
+                frame.startGame();
+                currentlyPlaying = true;
+                initialGame = false;
+                break;
+            case 8:
+                currentlyPlaying = false;
+                break;
+            case 9:
+                currentlyPlaying = false;
+                break;
+        }
+
+        gameState = status;
+
+        frame.updateStatusView(status,result);
+
+    }
+
+
+
+
+
+
+
 
     /**
      * Get the information of the next level from the Controller.FileManager
@@ -152,7 +278,7 @@ public class GameManager {
 
     public void registerScore(String name)
     {
-        updateHighScores(name + " " + currentScore);
+        updateHighScores(name + " " + currentScore1);
     }
     /**
      * Update high scores string.
@@ -216,57 +342,7 @@ public class GameManager {
         fManager.saveSettings (settings);
     }
 
-    /**
-     * Single player version of controlling players.
-     * Lets player to control the Model.Bomberman using Model.GameEngine.
-     *
-     * @param directions user input coming from View.MainFrame.
-     */
-    public void controlPlayer (int[] directions)
-    {
-        boolean dropBomb = directions[2] == 1;
 
-        int result = gEngine.elapseTime(directions[0], directions[1], dropBomb);
-        remainingTime--;
-        if (currentLevel < 4)
-        {
-            if (result == 1)
-            {
-                changeGameStatus(9);
-                currentLevel++;
-            }
-            if (result == 2)
-            {
-                changeGameStatus(10);
-                currentLevel++;
-            }
-        }
-        else
-        {
-            boolean b = checkHighScores(currentScore);
-            if(b)
-            {
-                changeGameStatus(12);
-            }
-            else
-                changeGameStatus(11);
-        }
-    }
-
-    /**
-     * Multi player version of controlling players.
-     * Lets both players to control their Model.Bomberman using Model.GameEngine.
-     *
-     * @param directions1 user input for the first player.
-     * @param directions2 user input for the second player.
-     */
-    public void controlPlayer (int[] directions1, int[] directions2)
-    {
-        boolean dropBomb1 = directions1[2] == 1;
-        boolean dropBomb2 = directions2[2] == 1;
-
-        gEngine.elapseTime(directions1[0], directions1[1], dropBomb1, directions2[0], directions2[1], dropBomb2);
-    }
 
     /**
      * Called by the View.MainFrame to learn the state of the game.
@@ -278,47 +354,6 @@ public class GameManager {
         return gameState;
     }
 
-    /**
-     * Changes the state of the game.
-     *
-     * @param status desired state to be changed.
-     */
-    public void changeGameStatus (int status)
-    {
-
-        switch (status) {
-            case -1:
-                currentLevel = 1;
-                currentScore = 0;
-                changeGameStatus(0);
-                return;
-            case 0:
-                currentlyPlaying = false;
-                break;
-            case 1:
-                if(!currentlyPlaying)
-                    loadLevel(currentLevel);
-                frame.startGame();
-                currentlyPlaying = true;
-                break;
-            case 2:
-                if(!currentlyPlaying)
-                    loadLevel(currentLevel);
-                frame.startGame();
-                currentlyPlaying = true;
-                break;
-            case 9:
-                currentlyPlaying = false;
-                break;
-            case 10:
-                currentlyPlaying = false;
-                break;
-        }
-        gameState = status;
-
-        frame.updateStatusView(status);
-
-    }
 
     public int getCurrentLevel() {
         return currentLevel;
@@ -336,13 +371,6 @@ public class GameManager {
         this.remainingTime = remainingTime;
     }
 
-    public int getCurrentScore() {
-        return currentScore;
-    }
-
-    public void setCurrentScore(int currentScore) {
-        this.currentScore = currentScore;
-    }
 
     public int getSoundLevel() {
         return soundLevel;
