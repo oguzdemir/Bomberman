@@ -96,6 +96,13 @@ public class GameManager {
         return instance;
     }
 
+    /**
+     * Updates the frame of the game.
+     * @param objectData of the game.
+     * @param bomberData of the game.
+     * @param bomberInfo about the bombers.
+     * @param scores of the players.
+     */
     public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo, int []scores)
     {
         currentScore1 += scores[0];
@@ -300,6 +307,10 @@ public class GameManager {
     }
 
 
+    /**
+     * Register the high score of the player to the high score list.
+     * @param name of the player.
+     */
     public void registerScore(String name)
     {
         if(twoPlayer)
@@ -314,6 +325,7 @@ public class GameManager {
 
         updateHighScores(name + " " + currentScore1);
     }
+
     /**
      * Update high scores string.
      *

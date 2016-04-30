@@ -28,17 +28,31 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
+/**
+ * Controller class for the sounds of the game.
+ *
+ * Created by Oğuz Demir on 30.04.2016.
+ */
 class SoundManager{
 
     private  String resource;
 
     private Clip clip;
     private FloatControl gainControl;
+
+    /**
+     * Constructor for the sound manager.
+     * @param resource name of the sound file.
+     */
     public SoundManager(String resource) {
         //gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         this.resource = "Sources/wav/" + resource;
     }
 
+    /**
+     * Change the volume of the sounds.
+     * @param volume level.
+     */
     public void changeVolume(int volume)
     {
         switch(volume)
@@ -79,12 +93,18 @@ class SoundManager{
 
     }
 
+    /**
+     * Stops the sound clip.
+     */
     public void stop() {
         if(clip!= null)
             clip.stop();
     }
 
 
+    /**
+     * Plays the sound clip.
+     */
     public void play() {
         clip = null;
         try {
