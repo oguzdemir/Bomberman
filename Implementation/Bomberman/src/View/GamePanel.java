@@ -23,7 +23,6 @@ public class GamePanel extends JPanel
     int delay = 10;
     int [] directions1;
     int [] directions2;
-    private GameManager gManager;
 
     int[][] gameMap;
     int[] bomberMap;
@@ -36,9 +35,8 @@ public class GamePanel extends JPanel
     private BufferedImage p1,p2,p3,p4;
 
 
-    public GamePanel(GameManager manager)
+    public GamePanel()
     {
-        gManager = manager;
         setBackground(new Color(255,255,255));
         setPreferredSize(new Dimension(400,400));
         //setLocation(100,100);
@@ -352,9 +350,8 @@ public class GamePanel extends JPanel
     {
         public void actionPerformed(ActionEvent event)
         {
-            if(gManager == null)
-                System.out.println("Manager NUll");
-            gManager.controlPlayer(directions1,directions2);
+
+            MainFrame.getInstance().controlPlayer(directions1,directions2);
 
             directions1[2] = 0;
             directions2[2] = 0;

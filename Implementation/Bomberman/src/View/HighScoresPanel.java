@@ -12,17 +12,14 @@ import java.awt.*;
  */
 public class HighScoresPanel extends InfoPanel
 {
-    private GameManager gManager;
 
-    public HighScoresPanel(GameManager manager)
+
+    public HighScoresPanel(String highScores)
     {
         super("High Scores  ");
 
-        gManager = manager;
 
         String[] columnNames = {"Name", "Score"};
-
-        String highScores = gManager.getHighScores();
         String[] scores = highScores.split(" ");
 
         String[][] data = new String[10][2];

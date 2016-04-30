@@ -7,7 +7,7 @@ package Model;
  *
  * Revised on 26.4.2016 by Oguz Demir
  */
-public class Bomberman extends GameObject implements Explodable
+public class Bomberman extends GameObject
 {
     // Local Variables
     private int id;
@@ -56,10 +56,10 @@ public class Bomberman extends GameObject implements Explodable
                 allZeros();
                 if(owner == id)
                 {
-                    engine.addScore(id, - 100);
+                    engine.addScore(owner, - 100);
                 }
                 else
-                    engine.addScore(id, 100);
+                    engine.addScore(owner, 100);
             }
             else
                 lives--;

@@ -80,7 +80,6 @@ public class GameOverPanel extends JPanel
                 }
             });
         }
-
         else
         {
             mainMenu = new JButton("Go to Main Menu");

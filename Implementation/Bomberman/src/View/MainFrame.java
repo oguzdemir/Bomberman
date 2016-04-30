@@ -25,12 +25,11 @@ public class MainFrame extends JFrame
     private GameInfoPanel infop1,infop2;
     private GameInfoHeaderPanel hudPanel;
 
-    private MainFrame(GameManager manager, GameEngine engine)
+    private MainFrame(GameManager manager)
     {
         super("Bombalamasyon");
         instance = this;
         gManager = manager;
-        gEngine = engine;
 
         //Frame initialized
 
@@ -41,14 +40,14 @@ public class MainFrame extends JFrame
 
 
         mainMenuPanel = new MainMenuPanel();
-        settingsPanel = new SettingsPanel(gManager);
+        settingsPanel = new SettingsPanel(gManager.getSettings());
         helpPanel = new HelpPanel();
-        highScoresPanel = new HighScoresPanel(gManager);
+        highScoresPanel = new HighScoresPanel(gManager.getHighScores());
         creditsPanel = new CreditsPanel();
 
 
         gameContainer = new JPanel();
-        gamePanel = new GamePanel(gManager);
+        gamePanel = new GamePanel();
         infop1 = new GameInfoPanel(true);
         infop2 = new GameInfoPanel(false);
         hudPanel = new GameInfoHeaderPanel();
@@ -111,10 +110,11 @@ public class MainFrame extends JFrame
                 gamePanel.requestFocus(true);
                 break;
             case 3:
+                settingsPanel = new SettingsPanel(gManager.getSettings());
                 getContentPane().add(settingsPanel);
                 break;
             case 4:
-                highScoresPanel = new HighScoresPanel(gManager);
+                highScoresPanel = new HighScoresPanel(gManager.getHighScores());
                 getContentPane().add(highScoresPanel);
                 break;
             case 5:
@@ -152,13 +152,24 @@ public class MainFrame extends JFrame
     {
         gManager.changeGameStatus(status,0);
     }
+
+    public void saveSettings(String s)
+    {
+        gManager.updateSettings(s);
+    }
+
+
+    public void controlPlayer(int []d1, int[]d2)
+    {
+        gManager.controlPlayer(d1,d2);
+    }
     public static MainFrame getInstance()
     {
         return instance;
     }
-    public static MainFrame getInstance(GameManager manager, GameEngine engine)
+    public static MainFrame getInstance(GameManager manager)
     {
-        instance = new MainFrame(manager,engine);
+        instance = new MainFrame(manager);
         return instance;
     }
 

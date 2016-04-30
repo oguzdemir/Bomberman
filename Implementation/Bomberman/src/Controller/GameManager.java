@@ -24,8 +24,7 @@ public class GameManager {
 
     private int gameState;
 
-    private int soundLevel;
-    private int musicLevel;
+
 
     private boolean twoPlayer;
     private boolean initialGame;
@@ -33,7 +32,7 @@ public class GameManager {
     private boolean currentlyPlaying;
     private boolean bgOn;
     private boolean soundOn;
-
+    private int musicLevel;
 
     private String musicAdr;
     private String highScores;
@@ -61,12 +60,11 @@ public class GameManager {
 
         bgOn = Boolean.parseBoolean(settings.split(" ")[0]);
         soundOn = Boolean.parseBoolean(settings.split(" ")[1]);
-        soundLevel = Integer.parseInt(settings.split(" ")[2]);
         musicLevel = Integer.parseInt(settings.split(" ")[2]);
 
 
         sManager = new SoundManager();
-        frame = MainFrame.getInstance(this, gEngine);
+        frame = MainFrame.getInstance(this);
         frame.setVisible( true );
 
 
@@ -141,10 +139,12 @@ public class GameManager {
                             result = 8;
                         else
                             result = 3;
+
+                        changeGameStatus(9,result);
+                        return;
                     }
 
-                    changeGameStatus(9,result);
-                    return;
+
                 }
 
                 boolean b = checkHighScores(currentScore1);
@@ -173,6 +173,9 @@ public class GameManager {
                 return;
             case 0:
                 initialGame = true;
+                currentLevel = 1;
+                currentScore1 = 0;
+                currentScore2 = 0;
                 currentlyPlaying = false;
                 break;
             case 1:
@@ -208,13 +211,7 @@ public class GameManager {
     }
 
 
-
-
-
-
-
-
-    /**
+   /**
      * Get the information of the next level from the Controller.FileManager
      * and load it.
      */
@@ -281,6 +278,16 @@ public class GameManager {
 
     public void registerScore(String name)
     {
+        if(twoPlayer)
+        {
+            if(currentScore2 > currentScore1)
+            {
+                updateHighScores(name + " " + currentScore2);
+                return;
+            }
+
+        }
+
         updateHighScores(name + " " + currentScore1);
     }
     /**
@@ -391,15 +398,6 @@ public class GameManager {
 
     public void setRemainingTime(int remainingTime) {
         this.remainingTime = remainingTime;
-    }
-
-
-    public int getSoundLevel() {
-        return soundLevel;
-    }
-
-    public void setSoundLevel(int soundLevel) {
-        this.soundLevel = soundLevel;
     }
 
     public int getMusicLevel() {

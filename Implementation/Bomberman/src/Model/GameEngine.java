@@ -20,7 +20,6 @@ public class GameEngine
     private ArrayList<PowerUp> powerUpList;
     private GameObject[][] objectMap;
     private int[][] objectIntMap;
-    private OverlapEngine oEngine;
     private int gridSize;
     private boolean gameState;
     private boolean twoPlayers;
@@ -101,7 +100,6 @@ public class GameEngine
         bomberList[3]  = new Bomberman(dimension, dimension,3);
 
 
-        oEngine = new OverlapEngine();
 
         e2 = new AiEngine(1,0);
         e3 = new AiEngine(-1,0);
