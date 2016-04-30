@@ -33,7 +33,7 @@ import javax.sound.sampled.DataLine;
  *
  * Created by Oğuz Demir on 30.04.2016.
  */
-class SoundManager{
+public class SoundManager{
 
     private  String resource;
 
