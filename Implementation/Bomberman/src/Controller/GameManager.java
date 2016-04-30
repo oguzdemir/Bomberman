@@ -315,9 +315,12 @@ public class GameManager {
             scoresList.add(score);
         }
 
-        nameList.remove(nameList.size() - 1);
-        scoresList.remove(scoresList.size() - 1);
-
+        if (nameList.size() > 5)
+        {
+            nameList.remove(nameList.size() - 1);
+            scoresList.remove(scoresList.size() - 1);
+        }
+        
         for (int i = 0; i < scoresList.size(); i++)
         {
             newHighScores += nameList.get(i) + " " + scoresList.get(i) + " ";
