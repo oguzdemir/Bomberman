@@ -78,6 +78,7 @@ public class GameManager {
         */
     }
 
+
     /**
      * Creates the Controller.GameManager instance for the first time if doesn't exist
      * or return the instance.
@@ -112,6 +113,12 @@ public class GameManager {
         boolean dropBomb2 = directions2[2] == 1;
 
         remainingTime--;
+
+        if(remainingTime==0)
+        {
+            gEngine.killBombers(twoPlayer);
+            return;
+        }
 
         int result;
         //SinglePlayer Game
@@ -236,7 +243,9 @@ public class GameManager {
      */
     public void loadLevel (int levelNo)
     {
-        remainingTime = 7200;
+
+        //remainingTime = 7200;
+        remainingTime = 200;
         int[][] gameData = fManager.getGameData(levelNo);
         int size = gameData.length;
        // boolean twoPlayer = getGameState() == 2; // Two player state = 2

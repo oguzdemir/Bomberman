@@ -12,7 +12,7 @@ public class Bomberman extends GameObject
     // Local Variables
     private int id;
     private int lives;
-    private int speed;
+    private double speed;
     private int bombLimit;
     private int bombMagnitude;
     private int shield;
@@ -31,7 +31,7 @@ public class Bomberman extends GameObject
         yPosition = y;
         this.id = id;
 
-        lives = 0;
+        lives = 2;
         speed = 1;
         bombLimit = 1;
         bombMagnitude = 1;
@@ -128,11 +128,11 @@ public class Bomberman extends GameObject
      */
     public void increaseSpeed ()
     {
-        if(speed < 1.4)
-            speed+= 0.1;
+        if(speed < 2)
+            speed+= 0.5;
     }
 
-    private void allZeros()
+    public void allZeros()
     {
         xPosition = 0;
         yPosition = 0;
@@ -162,7 +162,7 @@ public class Bomberman extends GameObject
         return bombLimit;
     }
 
-    public int getSpeed()
+    public double getSpeed()
     {
         return speed;
     }

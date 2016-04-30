@@ -136,19 +136,31 @@ public class GameEngine
         int [] infoData = new int[8];
 
         infoData[0] = bomberList[0].getLives();
-        infoData[1] = bomberList[0].getSpeed();
+        infoData[1] = (int)(bomberList[0].getSpeed()*10) -10;
         infoData[2] = bomberList[0].getBombLimit();
         infoData[3] = bomberList[0].getBombMagnitude();
 
         infoData[4] = bomberList[3].getLives();
         infoData[5] = bomberList[3].getBombLimit();
-        infoData[6] = bomberList[3].getSpeed();
+        infoData[6] = (int)(bomberList[3].getSpeed()*10) -10;
         infoData[7] = bomberList[3].getBombMagnitude();
 
 
         gManager.updateGameView(objectIntMap,drawData,infoData,scores);
 
     }
+
+    public void killBombers(boolean b)
+    {
+        if(b)
+        {
+            bomberList[3].allZeros();
+            diedList[3] = true;
+        }
+        bomberList[0].allZeros();
+        diedList[0] = true;
+    }
+
     /**
      * In singleplayer game, elapseTime method is called by Controller.GameManager to advance game
      * with directions of player
@@ -185,7 +197,7 @@ public class GameEngine
             {
                 dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
             }
-            moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
+            moveBomberman(0,(int)(x1 *pixelConstant * bomberList[0].getSpeed()) ,(int)(y1 * pixelConstant * bomberList[0].getSpeed()));
         }
 
 
@@ -195,7 +207,7 @@ public class GameEngine
 
         if(!diedList[1])
         {
-            b = moveBomberman(1,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
+            b = moveBomberman(1,(int)(a[0] * pixelConstant * bomberList[1].getSpeed()) ,(int)(a[1] * pixelConstant * bomberList[1].getSpeed()));
 
 
             e2.setCollided(b);
@@ -213,7 +225,7 @@ public class GameEngine
             a = e3.getDirections();
 
 
-            b = moveBomberman(2, a[0] * pixelConstant * bomberList[2].getSpeed(), a[1] * pixelConstant * bomberList[2].getSpeed());
+            b = moveBomberman(2, (int)(a[0] * pixelConstant * bomberList[2].getSpeed()), (int)(a[1] * pixelConstant * bomberList[2].getSpeed()));
 
 
             e3.setCollided(b);
@@ -230,7 +242,7 @@ public class GameEngine
             a = e4.getDirections();
 
 
-            b = moveBomberman(3, a[0] * pixelConstant * bomberList[3].getSpeed(), a[1] * pixelConstant * bomberList[3].getSpeed());
+            b = moveBomberman(3, (int)(a[0] * pixelConstant * bomberList[3].getSpeed()),(int)( a[1] * pixelConstant * bomberList[3].getSpeed()));
 
 
             e4.setCollided(b);
@@ -289,7 +301,7 @@ public class GameEngine
             {
                 dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
             }
-            moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
+            moveBomberman(0,(int)(x1 *pixelConstant * bomberList[0].getSpeed()) ,(int)(y1 * pixelConstant * bomberList[0].getSpeed()));
         }
 
         if(!diedList[3])
@@ -298,7 +310,7 @@ public class GameEngine
             {
                 dropBomb(bomberList[3].getxPosition(), bomberList[3].getyPosition(), 3 );
             }
-            moveBomberman(3,x2 *pixelConstant * bomberList[3].getSpeed() ,y2 * pixelConstant * bomberList[3].getSpeed());
+            moveBomberman(3,(int)(x2 *pixelConstant * bomberList[3].getSpeed()) ,(int)(y2 * pixelConstant * bomberList[3].getSpeed()));
         }
 
 
@@ -308,7 +320,7 @@ public class GameEngine
 
         if(!diedList[1])
         {
-            b = moveBomberman(1,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
+            b = moveBomberman(1,(int)(a[0] * pixelConstant * bomberList[1].getSpeed()) ,(int)(a[1] * pixelConstant * bomberList[1].getSpeed()));
 
 
             e2.setCollided(b);
@@ -326,7 +338,7 @@ public class GameEngine
             a = e3.getDirections();
 
 
-            b = moveBomberman(2, a[0] * pixelConstant * bomberList[2].getSpeed(), a[1] * pixelConstant * bomberList[2].getSpeed());
+            b = moveBomberman(2,(int)( a[0] * pixelConstant * bomberList[2].getSpeed()),(int)( a[1] * pixelConstant * bomberList[2].getSpeed()));
 
 
             e3.setCollided(b);
