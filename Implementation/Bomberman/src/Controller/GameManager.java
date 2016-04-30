@@ -1,4 +1,4 @@
-﻿package Controller;
+package Controller;
 
 import Model.GameEngine;
 import View.MainFrame;
@@ -7,7 +7,7 @@ import View.MainFrame;
  * Top level controller class for the communication between other
  * subsystems of the application.
  *
- * Created by Anıl Sert on 26.04.2016.
+ * Created by An?l Sert on 26.04.2016.
  */
 public class GameManager {
     // Instance of the class for satisfying singleton property
@@ -39,7 +39,6 @@ public class GameManager {
     private GameManager ()
     {
         currentLevel = 1;
-        remainingTime = 300;
         currentScore = 0;
         gameState = 0; // Main menu state is 0
 
@@ -82,7 +81,8 @@ public class GameManager {
 
     public void updateGameView(int[][] objectData, int[] bomberData, int[] bomberInfo,int []scores)
     {
-        frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,scores[0]);
+        currentScore += scores[0];
+        frame.updateGameView(objectData,bomberData,bomberInfo,currentLevel,remainingTime,currentScore);
     }
 
     /**
@@ -110,12 +110,13 @@ public class GameManager {
      */
     public void loadLevel (int levelNo)
     {
-        currentLevel++;
+        remainingTime = 7200;
         int[][] gameData = fManager.getGameData(levelNo);
         int size = gameData.length;
        // boolean twoPlayer = getGameState() == 2; // Two player state = 2
         boolean twoPlayer = false;
         gEngine = new GameEngine(gameData, size, twoPlayer,this);
+
     }
 
     /**
@@ -148,6 +149,11 @@ public class GameManager {
         return fManager.loadSettings ();
     }
 
+
+    public void registerScore(String name)
+    {
+        updateHighScores(name + " " + currentScore);
+    }
     /**
      * Update high scores string.
      *
@@ -174,6 +180,30 @@ public class GameManager {
         }
 
         highScores = newHighScores;
+
+        registerHighScores();
+    }
+
+    public boolean checkHighScores (int given)
+    {
+        String[] scoreList = getHighScores().split(" ");
+
+        int count = 0;
+        for (int i = 0; i < scoreList.length - 1; i = i + 2)
+        {
+            String name = scoreList[i];
+            String score = scoreList[i + 1];
+            count ++;
+            if (Integer.parseInt(score) < given)
+            {
+                return true;
+            }
+
+        }
+        if(count < 10)
+            return true;
+
+        return false;
     }
 
     /**
@@ -197,15 +227,30 @@ public class GameManager {
         boolean dropBomb = directions[2] == 1;
 
         int result = gEngine.elapseTime(directions[0], directions[1], dropBomb);
-        if(result == 1)
+        remainingTime--;
+        if (currentLevel < 4)
         {
-            changeGameStatus(9);
+            if (result == 1)
+            {
+                changeGameStatus(9);
+                currentLevel++;
+            }
+            if (result == 2)
+            {
+                changeGameStatus(10);
+                currentLevel++;
+            }
         }
-        if(result == 2)
+        else
         {
-            changeGameStatus(10);
+            boolean b = checkHighScores(currentScore);
+            if(b)
+            {
+                changeGameStatus(12);
+            }
+            else
+                changeGameStatus(11);
         }
-
     }
 
     /**
@@ -242,6 +287,11 @@ public class GameManager {
     {
 
         switch (status) {
+            case -1:
+                currentLevel = 1;
+                currentScore = 0;
+                changeGameStatus(0);
+                return;
             case 0:
                 currentlyPlaying = false;
                 break;

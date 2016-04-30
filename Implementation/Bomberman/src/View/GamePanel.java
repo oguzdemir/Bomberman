@@ -20,9 +20,9 @@ public class GamePanel extends JPanel
 {
     Timer timer;
 
-    int delay = 20;
+    int delay = 10;
     int [] directions1;
-    int [] directions2 = new int[3];
+    int [] directions2;
     private GameManager gManager;
     private GameEngine gEngine;
 
@@ -58,7 +58,12 @@ public class GamePanel extends JPanel
         directions1[0] = 0;
         directions1[1] = 0;
         directions1[2] = 0;
-        Random generator = new Random();
+
+        directions2 = new int[3];
+        directions2[0] = 0;
+        directions2[1] = 0;
+        directions2[2] = 0;
+
 
         timer = new Timer(delay, new TimerListener());
 
@@ -88,6 +93,21 @@ public class GamePanel extends JPanel
 
 
     }
+    public void gameOver(boolean b)
+    {
+        pauseGame();
+        removeAll();
+        validate();
+
+
+
+        JPanel x = new GameOverPanel(b);
+        add(x);
+        x.setLocation(0,200);
+
+        repaint();
+    }
+
     public void endGame()
     {
         pauseGame();
@@ -246,11 +266,11 @@ public class GamePanel extends JPanel
                 if( gameMap[i][j] == 7)
                     g2d.drawImage(b4,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 8)
-                    g2d.drawImage(p1,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(p3,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 9)
                     g2d.drawImage(p2,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 10)
-                    g2d.drawImage(p3,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(p1,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 11)
                     g2d.drawImage(p4,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 yCoordinate += 40;

@@ -162,6 +162,10 @@ public class GameEngine
      */
     public int elapseTime(int x1, int y1, boolean b1)
     {
+        for(int i = 0 ; i < 4 ; i++)
+        {
+            scores[i] = 0;
+        }
         int pixelConstant = GRID_DIMENSION / 4;
 
         if(diedList[0])
@@ -177,6 +181,7 @@ public class GameEngine
                 explodeBomb(bombList.get(i));
             }
         }
+
         if(!diedList[0])
         {
             if(b1)

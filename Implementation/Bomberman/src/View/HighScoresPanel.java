@@ -1,4 +1,4 @@
-﻿package View;
+package View;
 
 import Controller.GameManager;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 /**
  * High Scores screen.
  *
- * Created by Anıl Sert on 29.4.2016.
+ * Created by An?l Sert on 29.4.2016.
  */
 public class HighScoresPanel extends InfoPanel
 {

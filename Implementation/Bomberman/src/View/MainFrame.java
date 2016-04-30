@@ -74,6 +74,11 @@ public class MainFrame extends JFrame
         infop1.updateHUD(info[0],info[1],info[2],info[3] );
         hudPanel.updateHUD(remainingTime,currentScore,currentLevel);
     }
+
+    public void registerScore(String name)
+    {
+        gManager.registerScore(name);
+    }
     public void startGame()
     {
         gamePanel.startGame();
@@ -132,6 +137,18 @@ public class MainFrame extends JFrame
                 gamePanel.setFocusable(true);
                 gamePanel.requestFocus(true);
                 gamePanel.endLevel(true);
+                break;
+            case 11:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.gameOver(false);
+                break;
+            case 12:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.gameOver(true);
                 break;
             default:
                 break;

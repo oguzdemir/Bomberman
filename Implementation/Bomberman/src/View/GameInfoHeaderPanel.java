@@ -68,7 +68,7 @@ public class GameInfoHeaderPanel extends JPanel
 
     public void updateHUD(int time, int score, int level)
     {
-        timeLabel.setText("Time: " + time);
+        timeLabel.setText("Time: " + (time/60)/60 + ":" + (time/60)%60 );
         scoreLabel.setText("Score: " + score);
         levelLabel.setText("Level: " + level);
     }
