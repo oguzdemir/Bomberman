@@ -44,13 +44,13 @@ public class GameInfoPanel extends JPanel
         {
             JButton mainMenu;
 
-            mainMenu = new JButton("Pause");
+            mainMenu = new JButton("PauseX");
             mainMenu.addActionListener(new ActionListener()
             {
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    MainFrame.getInstance().changeStatus(0);
+                    MainFrame.getInstance().changeStatus(7);
                 }
             });
             mainMenu.setFont(customFont);

@@ -8,7 +8,7 @@ import java.awt.*;
 /**
  * High Scores screen.
  *
- * Created by Anıl Sert on 29.4.2016.
+ * Created by An?l Sert on 29.4.2016.
  */
 public class HighScoresPanel extends InfoPanel
 {
@@ -29,6 +29,7 @@ public class HighScoresPanel extends InfoPanel
 
         for (int i = 0; i < scores.length/2; i++)
         {
+            //System.out.println(scores[i]);
             data[i][0] = scores[2 * i];
             data[i][1] = scores[2 * i + 1];
         }

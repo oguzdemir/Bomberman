@@ -48,7 +48,7 @@ public class MainFrame extends JFrame
 
 
         gameContainer = new JPanel();
-        gamePanel = new GamePanel(gManager,gEngine);
+        gamePanel = new GamePanel(gManager);
         infop1 = new GameInfoPanel(true);
         infop2 = new GameInfoPanel(false);
         hudPanel = new GameInfoHeaderPanel();
@@ -68,26 +68,36 @@ public class MainFrame extends JFrame
         pack();//Size
 
     }
-    public void updateGameView(int[][] map, int[]bomberMap, int[]info,int currentLevel, int remainingTime, int currentScore )
+    public void updateGameView(int[][] map, int[]bomberMap, int[]info,int currentLevel, int remainingTime, int currentScore1, int currentScore2, boolean b )
     {
         gamePanel.update(map,bomberMap);
         infop1.updateHUD(info[0],info[1],info[2],info[3] );
-        hudPanel.updateHUD(remainingTime,currentScore,currentLevel);
+        if(b)
+        {
+            infop2.updateHUD(info[4],info[5],info[6],info[7] );
+            hudPanel.updateHUD(remainingTime,currentScore1,currentScore2,currentLevel);
+        }
+        else
+        hudPanel.updateHUD(remainingTime,currentScore1,currentLevel);
+    }
+
+    public void registerScore(String name)
+    {
+        gManager.registerScore(name);
     }
     public void startGame()
     {
         gamePanel.startGame();
     }
-    public void pauseGame()
-    {
-        gamePanel.pauseGame();
-    }
-    public void updateStatusView(int status)
+
+
+    public void updateStatusView(int status,int result)
     {
         getContentPane().removeAll();
         switch (status) {
             case 0:
                 getContentPane().add(mainMenuPanel);
+                gamePanel.stopGame();
                 break;
             case 1:
                 getContentPane().add(gameContainer);
@@ -95,7 +105,9 @@ public class MainFrame extends JFrame
                 gamePanel.requestFocus(true);
                 break;
             case 2:
-                getContentPane().add(gamePanel);
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
                 break;
             case 3:
                 getContentPane().add(settingsPanel);
@@ -109,6 +121,24 @@ public class MainFrame extends JFrame
             case 6:
                 getContentPane().add(creditsPanel);
                 break;
+            case 7:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.showPause();
+                break;
+            case 8:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.endLevel(result);
+                break;
+            case 9:
+                getContentPane().add(gameContainer);
+                gamePanel.setFocusable(true);
+                gamePanel.requestFocus(true);
+                gamePanel.gameOver(result);
+                break;
             default:
                 break;
         }
@@ -117,7 +147,7 @@ public class MainFrame extends JFrame
     }
     public void changeStatus(int status)
     {
-        gManager.changeGameStatus(status);
+        gManager.changeGameStatus(status,0);
     }
     public static MainFrame getInstance()
     {

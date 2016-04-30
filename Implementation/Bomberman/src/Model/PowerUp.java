@@ -15,8 +15,9 @@ public abstract class PowerUp extends GameObject
      * Method for deleting the powerup when it collided in an explosion.
      * @param engine the Model.GameEngine reference is hold to delete the object
      */
-    public void beExploded(GameEngine engine)
+    public void beExploded(GameEngine engine,int owner)
     {
+        engine.addScore(owner,-20);
         engine.deleteGameObject(this);
     }
 }

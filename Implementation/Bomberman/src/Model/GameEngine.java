@@ -24,6 +24,8 @@ public class GameEngine
     private int gridSize;
     private boolean gameState;
     private boolean twoPlayers;
+    private boolean[] diedList;
+    private int[] scores;
 
 
     AiEngine e2,e3,e4;
@@ -38,12 +40,16 @@ public class GameEngine
         this.gManager = gManager;
         //Initializing the collections
         bomberList = new Bomberman[4];
+        diedList = new boolean[4];
+
         bombList = new ArrayList<Bomb>();
         wallList = new ArrayList<Wall>();
         objectIntMap = new int [n][n];
         objectMap =  new GameObject[n][n];
         gridSize = n;
         gameState = true;
+        scores = new int[4];
+
         this.twoPlayers = twoPlayers;
         for(int i = 0; i < n ; i ++)
         {
@@ -102,36 +108,48 @@ public class GameEngine
         e4 = new AiEngine(0,-1);
     }
 
+    public void addScore(int index, int score)
+    {
+        scores[index] += score;
+    }
 
     public void serveGameMap()
     {
+
         int[] drawData = new int[12];
 
         drawData[0] = bomberList[0].getxPosition();
         drawData[1] = bomberList[0].getyPosition();
         drawData[2] = bomberList[0].getShield();
+
+
         drawData[3] = bomberList[1].getxPosition();
         drawData[4] = bomberList[1].getyPosition();
         drawData[5] = bomberList[1].getShield();
+
         drawData[6] = bomberList[2].getxPosition();
         drawData[7] = bomberList[2].getyPosition();
         drawData[8] = bomberList[2].getShield();
+
         drawData[9] = bomberList[3].getxPosition();
         drawData[10] = bomberList[3].getyPosition();
         drawData[11] = bomberList[3].getShield();
 
 
         int [] infoData = new int[8];
+
         infoData[0] = bomberList[0].getLives();
         infoData[1] = bomberList[0].getSpeed();
         infoData[2] = bomberList[0].getBombLimit();
         infoData[3] = bomberList[0].getBombMagnitude();
+
         infoData[4] = bomberList[3].getLives();
         infoData[5] = bomberList[3].getBombLimit();
         infoData[6] = bomberList[3].getSpeed();
         infoData[7] = bomberList[3].getBombMagnitude();
 
-        gManager.updateGameView(objectIntMap,drawData,infoData);
+
+        gManager.updateGameView(objectIntMap,drawData,infoData,scores);
 
     }
     /**
@@ -142,12 +160,19 @@ public class GameEngine
      * @param b1 is action flag for dropping bomb for player1's bomber
      * @return flag for indicating game is ended or not.
      */
-    public boolean elapseTime(int x1, int y1, boolean b1)
+    public int elapseTime(int x1, int y1, boolean b1)
     {
-        if(!gameState)
+        for(int i = 0 ; i < 4 ; i++)
         {
-            return true;
+            scores[i] = 0;
         }
+        int pixelConstant = GRID_DIMENSION / 4;
+
+        if(diedList[0])
+            return 1;
+        if(diedList[1] && diedList[2] && diedList[3] )
+            return 2;
+
         for(int i = 0 ; i < bombList.size() ; i++)
         {
             boolean b = bombList.get(i).countDown();
@@ -156,81 +181,71 @@ public class GameEngine
                 explodeBomb(bombList.get(i));
             }
         }
-        if(b1)
+
+        if(!diedList[0])
         {
-            dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
+            if(b1)
+            {
+                dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
+            }
+            moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
         }
-        int pixelConstant = GRID_DIMENSION / 4;
-
-
-
-        moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
-
 
 
         boolean b;
         int [] a = e2.getDirections();
 
 
-        b = moveBomberman(1,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
-
-
-        e2.setCollided(b);
-        if(a[2] == 1)
+        if(!diedList[1])
         {
-             b = dropBomb(bomberList[1].getxPosition(), bomberList[1].getyPosition(), 1 );
-            e2.bombPlaced(b);
+            b = moveBomberman(1,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
+
+
+            e2.setCollided(b);
+            if(a[2] == 1)
+            {
+                b = dropBomb(bomberList[1].getxPosition(), bomberList[1].getyPosition(), 1 );
+                e2.bombPlaced(b);
+            }
         }
 
 
-        //Bomber 3 commands
-        a = e3.getDirections();
-
-
-        b = moveBomberman(2,a[0] * pixelConstant * bomberList[2].getSpeed() ,a[1] * pixelConstant * bomberList[2].getSpeed());
-
-
-        e3.setCollided(b);
-        if(a[2] == 1)
+        if(!diedList[2])
         {
-            b = dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 2 );
-            e3.bombPlaced(b);
+            //Bomber 3 commands
+            a = e3.getDirections();
+
+
+            b = moveBomberman(2, a[0] * pixelConstant * bomberList[2].getSpeed(), a[1] * pixelConstant * bomberList[2].getSpeed());
+
+
+            e3.setCollided(b);
+            if (a[2] == 1)
+            {
+                b = dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 2);
+                e3.bombPlaced(b);
+            }
         }
 
-        //Bomber 4 commands
-        a = e4.getDirections();
-
-
-        b = moveBomberman(3,a[0] * pixelConstant * bomberList[3].getSpeed() ,a[1] * pixelConstant * bomberList[3].getSpeed());
-
-
-        e4.setCollided(b);
-        if(a[2] == 1)
+        if(!diedList[3])
         {
-            b = dropBomb(bomberList[3].getxPosition(), bomberList[3].getyPosition(), 2 );
-            e4.bombPlaced(b);
-        }
+            //Bomber 4 commands
+            a = e4.getDirections();
 
+
+            b = moveBomberman(3, a[0] * pixelConstant * bomberList[3].getSpeed(), a[1] * pixelConstant * bomberList[3].getSpeed());
+
+
+            e4.setCollided(b);
+            if (a[2] == 1)
+            {
+                b = dropBomb(bomberList[3].getxPosition(), bomberList[3].getyPosition(), 2);
+                e4.bombPlaced(b);
+            }
+        }
         serveGameMap();
-/*
 
-        a = e3.getDirections();
-        b = moveBomberman(2,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
-        e3.setCollided(b);
-        if(a[2] == 1)
-        {
-            dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 2 );
-        }
-
-        a = e4.getDirections();
-        b = moveBomberman(3,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
-        e4.setCollided(b);
-        if(a[2] == 1)
-        {
-            dropBomb(bomberList[3].getxPosition(), bomberList[3].getyPosition(), 3 );
-        }
-*/
-        return false;
+        return 0;
 
     }
 
@@ -245,72 +260,90 @@ public class GameEngine
      * @param b2 is action flag for dropping bomb for player2's bomber
      * @return flag for indicating game is ended or not.
      */
-    public boolean elapseTime(int x1, int y1, boolean b1, int x2, int y2, boolean b2)
+    public int elapseTime(int x1, int y1, boolean b1, int x2, int y2, boolean b2 )
     {
-        if(!gameState)
+        for(int i = 0 ; i < 4 ; i++)
         {
-            return true;
-        }
-        for(Bomb bomb: bombList)
-        {
-            boolean b = bomb.countDown();
-            if(b)
-            {
-                explodeBomb(bomb);
-            }
+            scores[i] = 0;
         }
         int pixelConstant = GRID_DIMENSION / 4;
-        if(bomberList[0] != null)
+
+        if(diedList[0] && diedList[3])
+            return 3;
+
+        if(diedList[1] && diedList[2] && diedList[3] )
+            return 4;
+
+        if(diedList[1] && diedList[2] && diedList[0] )
+            return 5;
+
+        for(int i = 0 ; i < bombList.size() ; i++)
+        {
+            boolean b = bombList.get(i).countDown();
+            if(b)
+            {
+                explodeBomb(bombList.get(i));
+            }
+        }
+
+        if(!diedList[0])
         {
             if(b1)
             {
                 dropBomb(bomberList[0].getxPosition(), bomberList[0].getyPosition(), 0 );
             }
-
-            moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed()  ,y1 * pixelConstant * bomberList[0].getSpeed());
+            moveBomberman(0,x1 *pixelConstant * bomberList[0].getSpeed() ,y1 * pixelConstant * bomberList[0].getSpeed());
         }
-        if(bomberList[1] != null)
+
+        if(!diedList[3])
         {
             if(b2)
             {
-                dropBomb(bomberList[1].getxPosition(), bomberList[1].getyPosition(), 1 );
+                dropBomb(bomberList[3].getxPosition(), bomberList[3].getyPosition(), 3 );
             }
-            pixelConstant = GRID_DIMENSION / 4;
-            moveBomberman(1,x2 *pixelConstant * bomberList[1].getSpeed()  ,y2 * pixelConstant * bomberList[1].getSpeed());
+            moveBomberman(3,x2 *pixelConstant * bomberList[3].getSpeed() ,y2 * pixelConstant * bomberList[3].getSpeed());
         }
 
 
-        Random generator = new Random();
-        int randomIndex1, randomIndex2;
+        boolean b;
+        int [] a = e2.getDirections();
 
-        //MOVING CPU BOMBERS
 
-        //Moving 3rd
-        randomIndex1= generator.nextInt( 3 ) - 1;
-        randomIndex2= generator.nextInt( 3 ) - 1;
-
-        moveBomberman(2,randomIndex1 * pixelConstant * bomberList[2].getSpeed() ,randomIndex2 * pixelConstant * bomberList[2].getSpeed());
-
-        //Moving 4th
-        randomIndex1= generator.nextInt( 3 ) - 1;
-        randomIndex2= generator.nextInt( 3 ) - 1;
-
-        moveBomberman(3,randomIndex1 * pixelConstant * bomberList[3].getSpeed() ,randomIndex2 * pixelConstant * bomberList[3].getSpeed());
-
-        //RANDOMLY DROP BOMBS FOR 2 CPU BOMBERS, WITH 10% probability
-        randomIndex1= generator.nextInt( 10 );
-        if(randomIndex1 == 5)
+        if(!diedList[1])
         {
-            dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 1 );
+            b = moveBomberman(1,a[0] * pixelConstant * bomberList[1].getSpeed() ,a[1] * pixelConstant * bomberList[1].getSpeed());
+
+
+            e2.setCollided(b);
+            if(a[2] == 1)
+            {
+                b = dropBomb(bomberList[1].getxPosition(), bomberList[1].getyPosition(), 1 );
+                e2.bombPlaced(b);
+            }
         }
 
-        randomIndex1= generator.nextInt( 10 );
-        if(randomIndex1 == 5)
+
+        if(!diedList[2])
         {
-            dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 1 );
+            //Bomber 3 commands
+            a = e3.getDirections();
+
+
+            b = moveBomberman(2, a[0] * pixelConstant * bomberList[2].getSpeed(), a[1] * pixelConstant * bomberList[2].getSpeed());
+
+
+            e3.setCollided(b);
+            if (a[2] == 1)
+            {
+                b = dropBomb(bomberList[2].getxPosition(), bomberList[2].getyPosition(), 2);
+                e3.bombPlaced(b);
+            }
         }
 
-        return false;
+
+        serveGameMap();
+
+        return 0;
 
     }
 
@@ -337,18 +370,9 @@ public class GameEngine
             {
                 if( ((Bomberman)object).getId() == i )
                 {
-                    bomberList[i] = null;
+                    diedList[i] = true;
                 }
             }
-            if(!twoPlayers && bomberList[0] == null)
-            {
-                gameState = false;
-            }
-            if(twoPlayers && bomberList[0] == null && bomberList[1] == null)
-            {
-                gameState = false;
-            }
-            return;
         }
         int xCoordinate = object.getxPosition();
         int yCoordinate = object.getyPosition();
@@ -427,36 +451,6 @@ public class GameEngine
         }
 
         return false;
-        /*Model.Bomberman b = bomberList[index];
-
-        b.move(x,y);
-
-        Point[] corners = new Point[4];
-        int xCoordinate = b.getxPosition();
-        int yCoordinate = b.getyPosition();
-
-        corners[0] = new Point(xCoordinate+2, yCoordinate+2);
-        corners[1] = new Point(xCoordinate+2, yCoordinate + 38);
-        corners[2] = new Point(xCoordinate + 38, yCoordinate+2);
-        corners[3] = new Point(xCoordinate + 38 , yCoordinate + 38);
-
-        for(int i = 0; i < 4 ; i ++)
-        {
-            Model.GameObject o = objectMap[corners[i].x / GRID_DIMENSION ][corners[i].y / GRID_DIMENSION];
-            if(o != null)
-            {
-                if( o instanceof Model.Wall)
-                    b.move(x *(-1), y * (-1));
-                if( o instanceof Model.PowerUp)
-                {
-                    ((Model.PowerUp) o).beTaken(b);
-                    deleteGameObject(o);
-                }
-
-                return;
-            }
-        }
-        */
 
     }
 
@@ -502,7 +496,7 @@ public class GameEngine
             PowerUp newPowerUp;
             if(type == 0)
             {
-                newPowerUp = new Shield(x,y);
+                newPowerUp = new LimitUp(x,y);
             }
             else if(type == 1)
             {
@@ -531,6 +525,7 @@ public class GameEngine
      */
     private void explodeBomb(Bomb bomb)
     {
+        int owner = bomb.getOwner();
         int magnitude = bomberList[bomb.getOwner()].getBombMagnitude();
 
         int[] bombersXGrids = new int[4];
@@ -548,29 +543,45 @@ public class GameEngine
         int xGrid = xCoordinate / GRID_DIMENSION;
         int yGrid = yCoordinate / GRID_DIMENSION;
 
+
         objectMap[xGrid][yGrid] = null;
         objectIntMap[xGrid][yGrid] = 0;
         bombList.remove(bomb);
+
+        //On the bomb
+        for(int j = 0; j < 4 ; j++)
+        {
+            boolean flag = false;
+            if(xGrid == bombersXGrids[j] && yGrid == bombersYGrids[j])
+            {
+                bomberList[j].beExploded(this,owner);
+                flag = true;
+            }
+            if(flag)
+                break;
+        }
 
         //left direction
         for(int i = 1 ; i <= magnitude ; i++)
         {
             if(xGrid-i >= 0 && objectMap[xGrid-i][yGrid] != null)
             {
-                objectMap[xGrid-i][yGrid].beExploded(this);
+                objectMap[xGrid-i][yGrid].beExploded(this,owner);
                 break;
             }
+            boolean flag = false;
             for(int j = 0; j < 4 ; j++)
             {
-                boolean flag = false;
+
                 if(xGrid-i == bombersXGrids[j] && yGrid == bombersYGrids[j])
                 {
-                    bomberList[j].beExploded(this);
+                    bomberList[j].beExploded(this,owner);
                     flag = true;
                 }
-                if(flag)
-                    break;
+
             }
+            if(flag)
+                break;
 
 
         } // end of left direction
@@ -580,21 +591,22 @@ public class GameEngine
         {
             if( xGrid+i < gridSize && objectMap[xGrid+i][yGrid] != null)
             {
-                objectMap[xGrid+i][yGrid].beExploded(this);
+                objectMap[xGrid+i][yGrid].beExploded(this,owner);
                 break;
             }
+            boolean flag = false;
             for(int j = 0; j < 4 ; j++)
             {
-                boolean flag = false;
+
                 if(xGrid + i == bombersXGrids[j] && yGrid == bombersYGrids[j])
                 {
-                    bomberList[j].beExploded(this);
+                    bomberList[j].beExploded(this,owner);
                     flag = true;
                 }
-                if(flag)
-                    break;
-            }
 
+            }
+            if(flag)
+                break;
 
         } // end of right direction
 
@@ -603,20 +615,22 @@ public class GameEngine
         {
             if( yGrid - i >= 0 && objectMap[xGrid][yGrid - i] != null)
             {
-                objectMap[xGrid][yGrid - i].beExploded(this);
+                objectMap[xGrid][yGrid - i].beExploded(this,owner);
                 break;
             }
+            boolean flag = false;
             for(int j = 0; j < 4 ; j++)
             {
-                boolean flag = false;
+
                 if(xGrid == bombersXGrids[j] && yGrid - i == bombersYGrids[j])
                 {
-                    bomberList[j].beExploded(this);
+                    bomberList[j].beExploded(this,owner);
                     flag = true;
                 }
-                if(flag)
-                    break;
+
             }
+            if(flag)
+                break;
         } // end of up direction
 
         //down direction
@@ -624,20 +638,22 @@ public class GameEngine
         {
             if( yGrid + i < gridSize && objectMap[xGrid][yGrid + i] != null)
             {
-                objectMap[xGrid][yGrid + i].beExploded(this);
+                objectMap[xGrid][yGrid + i].beExploded(this,owner);
                 break;
             }
+            boolean flag = false;
             for(int j = 0; j < 4 ; j++)
             {
-                boolean flag = false;
+
                 if(xGrid == bombersXGrids[j] && yGrid + i == bombersYGrids[j])
                 {
-                    bomberList[j].beExploded(this);
+                    bomberList[j].beExploded(this,owner);
                     flag = true;
                 }
-                if(flag)
-                    break;
+
             }
+            if(flag)
+                break;
         } // end of down direction
     }
 

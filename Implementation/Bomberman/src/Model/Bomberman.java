@@ -31,7 +31,7 @@ public class Bomberman extends GameObject implements Explodable
         yPosition = y;
         this.id = id;
 
-        lives = 2;
+        lives = 0;
         speed = 1;
         bombLimit = 1;
         bombMagnitude = 1;
@@ -45,21 +45,27 @@ public class Bomberman extends GameObject implements Explodable
      * @param engine reference for the Model.GameEngine class of the game.
      */
     @Override
-    public void beExploded (GameEngine engine)
+    public void beExploded (GameEngine engine, int owner)
     {
-        return;
 
-        /*if(shield <= 0)
+        if(shield <= 0)
         {
             if(lives == 0)
             {
                 engine.deleteGameObject(this);
+                allZeros();
+                if(owner == id)
+                {
+                    engine.addScore(id, - 100);
+                }
+                else
+                    engine.addScore(id, 100);
             }
             else
                 lives--;
         }
         else
-            shield = 0;*/
+            shield = 0;
     }
 
     public int getLives()
@@ -93,7 +99,7 @@ public class Bomberman extends GameObject implements Explodable
      */
     public void giveShield ()
     {
-        shield = 300;
+        shield = 900;
     }
 
     /**
@@ -124,6 +130,18 @@ public class Bomberman extends GameObject implements Explodable
     {
         if(speed < 1.4)
             speed+= 0.1;
+    }
+
+    private void allZeros()
+    {
+        xPosition = 0;
+        yPosition = 0;
+
+        lives = 0;
+        speed = 0;
+        bombLimit = 0;
+        bombMagnitude = 0;
+        shield = 0;
     }
 
     public int getId() {

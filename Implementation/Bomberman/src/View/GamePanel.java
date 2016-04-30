@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,11 +20,10 @@ public class GamePanel extends JPanel
 {
     Timer timer;
 
-    int delay = 20;
+    int delay = 10;
     int [] directions1;
-    int [] directions2 = new int[3];
+    int [] directions2;
     private GameManager gManager;
-    private GameEngine gEngine;
 
     int[][] gameMap;
     int[] bomberMap;
@@ -34,10 +34,11 @@ public class GamePanel extends JPanel
     private BufferedImage b1,b2,b3,b4;
     private BufferedImage w1,w2,w3;
     private BufferedImage p1,p2,p3,p4;
-    public GamePanel(GameManager manager, GameEngine engine)
+
+
+    public GamePanel(GameManager manager)
     {
         gManager = manager;
-        gEngine = engine;
         setBackground(new Color(255,255,255));
         setPreferredSize(new Dimension(400,400));
         //setLocation(100,100);
@@ -55,7 +56,12 @@ public class GamePanel extends JPanel
         directions1[0] = 0;
         directions1[1] = 0;
         directions1[2] = 0;
-        Random generator = new Random();
+
+        directions2 = new int[3];
+        directions2[0] = 0;
+        directions2[1] = 0;
+        directions2[2] = 0;
+
 
         timer = new Timer(delay, new TimerListener());
 
@@ -82,16 +88,71 @@ public class GamePanel extends JPanel
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
 
-    public void pauseGame()
+
+    }
+    public void showPause()
     {
         timer.stop();
+        removeAll();
+        validate();
+
+
+
+        JPanel x = new PausePanel();
+        add(x);
+        x.setLocation(0,200);
+
+        repaint();
     }
+
+    public void endLevel(int result)
+    {
+        timer.stop();
+        removeAll();
+        validate();
+
+        JPanel x = new EndPanel(result);
+        add(x);
+        x.setLocation(0,200);
+
+        repaint();
+    }
+
+
+    public void gameOver(int result)
+    {
+        timer.stop();
+        removeAll();
+        validate();
+
+
+        JPanel x = new GameOverPanel(result);
+        add(x);
+        x.setLocation(0,200);
+
+        repaint();
+    }
+
+
+
+
     public void startGame()
+    {
+        removeAll();
+        validate();
+        repaint();
+
+        timer.start();
+    }
+
+    public void stopGame()
     {
         timer.start();
     }
+
+
+
 
     public void update(int[][] map, int[]data)
     {
@@ -99,6 +160,7 @@ public class GamePanel extends JPanel
         bomberMap = data;
         repaint();
     }
+
     private class KeyboardListener implements KeyListener
     {
         @Override
@@ -128,8 +190,27 @@ public class GamePanel extends JPanel
                     directions1[0] = 1;
                     // handle right
                     break;
-                case KeyEvent.VK_SPACE:
+                case KeyEvent.VK_NUMPAD0:
                     directions1[2] = 1;
+                    // handle right
+                    break;
+                case KeyEvent.VK_W:
+                    directions2[1] = -1;
+                    break;
+                case KeyEvent.VK_S:
+                    directions2[1] = 1;
+                    // handle down
+                    break;
+                case KeyEvent.VK_A:
+                    directions2[0] = -1;
+                    // handle left
+                    break;
+                case KeyEvent.VK_D:
+                    directions2[0] = 1;
+                    // handle right
+                    break;
+                case KeyEvent.VK_SPACE:
+                    directions2[2] = 1;
                     // handle right
                     break;
             }
@@ -154,6 +235,21 @@ public class GamePanel extends JPanel
                     break;
                 case KeyEvent.VK_RIGHT:
                     directions1[0] = 0;
+                    // handle right
+                    break;
+                case KeyEvent.VK_W:
+                    directions2[1] = 0;
+                    break;
+                case KeyEvent.VK_S:
+                    directions2[1] = 0;
+                    // handle down
+                    break;
+                case KeyEvent.VK_A:
+                    directions2[0] = 0;
+                    // handle left
+                    break;
+                case KeyEvent.VK_D:
+                    directions2[0] = 0;
                     // handle right
                     break;
 
@@ -193,11 +289,11 @@ public class GamePanel extends JPanel
                 if( gameMap[i][j] == 7)
                     g2d.drawImage(b4,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 8)
-                    g2d.drawImage(p1,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(p3,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 9)
                     g2d.drawImage(p2,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 10)
-                    g2d.drawImage(p3,xCoordinate,yCoordinate,40,40,Color.gray,null);
+                    g2d.drawImage(p1,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 if( gameMap[i][j] == 11)
                     g2d.drawImage(p4,xCoordinate,yCoordinate,40,40,Color.gray,null);
                 yCoordinate += 40;
@@ -210,24 +306,45 @@ public class GamePanel extends JPanel
             yCoordinate = 0;
         }
 
-        if(bomberMap[2]>0)
-            g2d.drawImage(c1s,bomberMap[0],bomberMap[1],40,40,Color.white,null);
-        else
-            g2d.drawImage(c1,bomberMap[0],bomberMap[1],40,40,Color.white,null);
+        if(bomberMap[0] != 0 && bomberMap[1] != 0)
+            if(bomberMap[2]>0)
+                g2d.drawImage(c1s,bomberMap[0],bomberMap[1],40,40,Color.white,null);
+            else
+                g2d.drawImage(c1,bomberMap[0],bomberMap[1],40,40,Color.white,null);
 
-        if(bomberMap[5]>0)
-            g2d.drawImage(c2s,bomberMap[3],bomberMap[4],40,40,Color.white,null);
-        else
-            g2d.drawImage(c2,bomberMap[3],bomberMap[4],40,40,Color.white,null);
+        if(bomberMap[3] != 0 && bomberMap[4] != 0)
+            if(bomberMap[5]>0)
+                g2d.drawImage(c2s,bomberMap[3],bomberMap[4],40,40,Color.white,null);
+            else
+                g2d.drawImage(c2,bomberMap[3],bomberMap[4],40,40,Color.white,null);
 
-        if(bomberMap[8]>0)
-            g2d.drawImage(c3s,bomberMap[6],bomberMap[7],40,40,Color.white,null);
-        else
-            g2d.drawImage(c3,bomberMap[6],bomberMap[7],40,40,Color.white,null);
-        if(bomberMap[11]>0)
-            g2d.drawImage(c4s,bomberMap[9],bomberMap[10],40,40,Color.white,null);
-        else
-            g2d.drawImage(c1,bomberMap[9],bomberMap[10],40,40,Color.white,null);
+        if(bomberMap[6] != 0 && bomberMap[7] != 0)
+            if(bomberMap[8]>0)
+                g2d.drawImage(c3s,bomberMap[6],bomberMap[7],40,40,Color.white,null);
+            else
+                g2d.drawImage(c3,bomberMap[6],bomberMap[7],40,40,Color.white,null);
+
+        if(bomberMap[9] != 0 && bomberMap[10] != 0)
+            if(bomberMap[11]>0)
+                g2d.drawImage(c4s,bomberMap[9],bomberMap[10],40,40,Color.white,null);
+            else
+                g2d.drawImage(c4,bomberMap[9],bomberMap[10],40,40,Color.white,null);
+
+
+        /*
+        if(paused)
+        {
+            System.out.println("AAAAA");
+            int alpha = 127; // 50% transparent
+            Color myColour = new Color(0, 0, 0, alpha);
+            g2d.setPaint(myColour);
+            g2d.fill(new Rectangle2D.Double(0, 0, 800, 800));
+
+            g2d.setPaint(Color.white);
+            g2d.drawString("GAME IS PAUSED",100,100);
+
+            timer.stop();
+        }*/
     }
 
 
@@ -237,10 +354,10 @@ public class GamePanel extends JPanel
         {
             if(gManager == null)
                 System.out.println("Manager NUll");
-            gManager.controlPlayer(directions1);
+            gManager.controlPlayer(directions1,directions2);
 
             directions1[2] = 0;
-
+            directions2[2] = 0;
            /* for(int i = 0; i< 3 ; i++)
                 directions1[i] = 0;*/
 

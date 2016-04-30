@@ -33,7 +33,7 @@ public class Bomb extends GameObject
      * @param engine reference for the Model.GameEngine class of the game.
      */
     @Override
-    public void beExploded (GameEngine engine)
+    public void beExploded (GameEngine engine,int owner)
     {
         return;
     }
