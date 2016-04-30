@@ -34,8 +34,12 @@ public class GameEngine
     private static final int GRID_DIMENSION = 40;
     //Constructor
     /**
-    Constructor called by Controller.GameManager with 2D array holding the wall map and the dimension size.
-    Also, gametype is given with a boolean
+     * Constructor called by Controller.GameManager with 2D array holding the wall map and the dimension size.
+     * Also, gametype is given with a boolean
+     * @param map map for the game.
+     * @param n grid size of the game.
+     * @param twoPlayers playing or not.
+     * @param gManager Game manager reference for the game.
      */
     public GameEngine(int[][] map, int n, boolean twoPlayers, GameManager gManager)
     {
@@ -107,11 +111,19 @@ public class GameEngine
         e4 = new AiEngine(0,-1);
     }
 
+    /**
+     * Increase the score.
+     * @param index player1 or 2.
+     * @param score to increase.
+     */
     public void addScore(int index, int score)
     {
         scores[index] += score;
     }
 
+    /**
+     * Send game data to the manager after every action.
+     */
     public void serveGameMap()
     {
 
@@ -152,6 +164,10 @@ public class GameEngine
 
     }
 
+    /**
+     * Kill all bombers.
+     * @param b timer ends or not.
+     */
     public void killBombers(boolean b)
     {
         if(b)
@@ -358,6 +374,10 @@ public class GameEngine
 
     }
 
+    /**
+     * Change the wall type.
+     * @param w reference to the damaged wall.
+     */
     public void changeWallType(Wall w)
     {
         int xCoordinate = w.getxPosition();

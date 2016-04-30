@@ -132,6 +132,9 @@ public class Bomberman extends GameObject
             speed+= 0.1;
     }
 
+    /**
+     * Sets all variables to the zero for the bomberman.
+     */
     public void allZeros()
     {
         xPosition = 0;
