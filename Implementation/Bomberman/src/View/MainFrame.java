@@ -114,10 +114,12 @@ public class MainFrame extends JFrame
                 getContentPane().add(settingsPanel);
                 break;
             case 4:
+                highScoresPanel = new HighScoresPanel(gManager);
                 getContentPane().add(highScoresPanel);
                 break;
             case 5:
                 getContentPane().add(helpPanel);
+
                 break;
             case 6:
                 getContentPane().add(creditsPanel);
