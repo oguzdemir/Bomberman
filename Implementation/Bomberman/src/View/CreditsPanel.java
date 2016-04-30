@@ -17,8 +17,9 @@ public class CreditsPanel extends InfoPanel
         super("Credits  ");
 
         JTextArea text = new JTextArea("Oguz Demir - oguz.demir (at) ug.bilkent.edu.tr\n" +
-                "Kaan Kale - \n" +
-                "Anil Sert - anil.sert (at) ug.bilkent.edu.tr\n");
+                "Kaan Kale - kkale (at) ug.bilkent.edu.tr\n" +
+                "Anil Sert - anil.sert (at) ug.bilkent.edu.tr\n\n" +
+                "This project is created for Bilkent University CS319 Object Oriented Programming Course in Spring 2016");
 
 
         text.setSize(new Dimension(900,900));
@@ -32,6 +33,6 @@ public class CreditsPanel extends InfoPanel
         text.setOpaque(false);
 
         this.add(text);
-        text.setLocation(50,350);
+        text.setLocation(50,300);
     }
 }

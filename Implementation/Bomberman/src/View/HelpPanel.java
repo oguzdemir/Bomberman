@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class HelpPanel extends InfoPanel
 {
-    private BufferedImage p1,p2,p3,p4;
+    private BufferedImage p1,p2,p3,p4,cont1, cont2;
 
     public HelpPanel()
     {
@@ -25,6 +25,8 @@ public class HelpPanel extends InfoPanel
             p2 = ImageIO.read(new File("src/Sources/img/p2.png"));
             p3 = ImageIO.read(new File("src/Sources/img/p3.png"));
             p4 = ImageIO.read(new File("src/Sources/img/p4.png"));
+            cont1 = ImageIO.read(new File("src/Sources/img/cont1.png"));
+            cont2 = ImageIO.read(new File("src/Sources/img/cont2.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -142,5 +144,7 @@ public class HelpPanel extends InfoPanel
         g.drawImage(p2, 50, 550, 50, 50, this);
         g.drawImage(p3, 50, 600, 50, 50, this);
         g.drawImage(p4, 50, 650, 50, 50, this);
+        g.drawImage(cont1, 50, 400, 200, 100, this);
+        g.drawImage(cont2, 400, 400, 200, 100, this);
     }
 }
