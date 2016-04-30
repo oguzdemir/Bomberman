@@ -315,7 +315,7 @@ public class GameManager {
             scoresList.add(score);
         }
 
-        if (nameList.size() > 5)
+        if (nameList.size() > 10)
         {
             nameList.remove(nameList.size() - 1);
             scoresList.remove(scoresList.size() - 1);
