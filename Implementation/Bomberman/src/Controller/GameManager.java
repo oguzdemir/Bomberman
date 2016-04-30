@@ -3,6 +3,8 @@ package Controller;
 import Model.GameEngine;
 import View.MainFrame;
 
+import java.util.ArrayList;
+
 /**
  * Top level controller class for the communication between other
  * subsystems of the application.
@@ -289,24 +291,40 @@ public class GameManager {
     public void updateHighScores (String scores)
     {
         String[] scoreList = getHighScores().split(" ");
+        ArrayList<String> nameList = new ArrayList<String>();
+        ArrayList<String> scoresList = new ArrayList<String>();
+
         String newName = scores.split(" ")[0];
         String newScore = scores.split(" ")[1];
         String newHighScores = "";
 
+        boolean notput = false;
+
         for (int i = 0; i < scoreList.length - 1; i = i + 2)
         {
-            String name = scoreList[i];
             String score = scoreList[i + 1];
 
-            if (Integer.parseInt(score) < Integer.parseInt(newScore))
+            if (Integer.parseInt(score) < Integer.parseInt(newScore) && !notput)
             {
-                newHighScores += newName + " " + newScore + " ";
+                notput = true;
+                nameList.add(newName);
+                scoresList.add(newScore);
             }
 
-            newHighScores += name + " " + score + " ";
+            nameList.add(scoreList[i]);
+            scoresList.add(score);
+        }
+
+        nameList.remove(nameList.size() - 1);
+        scoresList.remove(scoresList.size() - 1);
+
+        for (int i = 0; i < scoresList.size(); i++)
+        {
+            newHighScores += nameList.get(i) + " " + scoresList.get(i) + " ";
         }
 
         highScores = newHighScores;
+
 
         registerHighScores();
     }
