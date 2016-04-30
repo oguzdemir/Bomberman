@@ -69,7 +69,7 @@ public class GameManager {
         frame.setVisible( true );
 
         click= new SoundManager("click.wav");
-        explode = new SoundManager("explode.wav");
+        explode = new SoundManager("explosion.wav");
 
 
         currentlyPlaying = false;

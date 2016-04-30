@@ -31,14 +31,12 @@ import javax.sound.sampled.DataLine;
 class SoundManager{
 
     private  String resource;
-    private  String resource2;
 
     private Clip clip;
     private FloatControl gainControl;
     public SoundManager(String resource) {
         //gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        this.resource = resource;
-        this.resource2 = resource;
+        this.resource = "Sources/wav/" + resource;
     }
 
     public void changeVolume(int volume)
