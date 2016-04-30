@@ -20,6 +20,7 @@ public class FileManager
      * @param levelNo level that needs to be drawn to screen.
      * @return level data.
      */
+
     public int[][] getGameData(int levelNo)
     {
         int [][] data = new int[GRID_SIZE][GRID_SIZE];
@@ -119,5 +120,7 @@ public class FileManager
         oldFile.delete();
         newFile.renameTo(oldFile);
     }
+
+
 
 }
