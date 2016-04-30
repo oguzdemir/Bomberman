@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Credits screen.
+ * Class for the credits screen.
  *
  * Created by od on 28.4.2016.
  *
@@ -12,6 +12,9 @@ import java.awt.*;
  */
 public class CreditsPanel extends InfoPanel
 {
+    /**
+     * Default constructor for the Credits screen.
+     */
     public CreditsPanel()
     {
         super("Credits  ");

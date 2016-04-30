@@ -8,12 +8,19 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 30.4.2016.
+ * Game end class for the game.
+ *
+ * Created by Oğuz Demir on 30.4.2016.
  */
 public class EndPanel extends JPanel
 {
     Font customFont;
 
+    /**
+     * Default constructor for the game end panel
+     *
+     * @param situation win or lose situation.
+     */
     public EndPanel(int situation)
     {
         super();

@@ -10,11 +10,17 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 28.4.2016.
+ * Main menu screen.
+ *
+ * Created by Oğuz Demir on 28.4.2016.
  */
 public class MainMenuPanel extends JPanel
 {
     private Font customFont;
+
+    /**
+     * Default constructor for the main menu.
+     */
     public MainMenuPanel()
     {
         super();
@@ -113,6 +119,7 @@ public class MainMenuPanel extends JPanel
         setVisible(true);
     }
 
+    @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -124,6 +131,9 @@ public class MainMenuPanel extends JPanel
         }
     }
 
+    /**
+     * Listener for the menu items.
+     */
     private class MenuListener implements ActionListener
     {
         public void actionPerformed(ActionEvent event)

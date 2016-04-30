@@ -9,12 +9,18 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 28.4.2016.
+ * Parent Information panels for other panels.
+ *
+ * Created by Oğuz Demir on 28.4.2016.
  */
 public abstract class InfoPanel extends JPanel
 {
     Font customFont,customFont2, customFont3;
 
+    /**
+     * Constructor for the information panels.
+     * @param title title of the panel.
+     */
     public InfoPanel(String title)
     {
         super();
@@ -69,6 +75,7 @@ public abstract class InfoPanel extends JPanel
 
     }
 
+    @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);

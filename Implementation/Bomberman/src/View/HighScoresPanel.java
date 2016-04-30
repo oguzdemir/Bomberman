@@ -14,6 +14,10 @@ public class HighScoresPanel extends InfoPanel
 {
 
 
+    /**
+     * Constructor for the high scores screen.
+     * @param highScores string representation of the high scores.
+     */
     public HighScoresPanel(String highScores)
     {
         super("High Scores  ");

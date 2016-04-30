@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
+ * Engine for the Game.
+ *
  * Created by Oguz Demir on 23.4.2016.
  */
 public class GameEngine
@@ -494,6 +496,11 @@ public class GameEngine
 
     }
 
+    /**
+     * Drop new power ups to the game map.
+     * @param x position of the power up.
+     * @param y position of the power up.
+     */
     public void dropPowerUp( int x , int y)
     {
         Random generator = new Random();

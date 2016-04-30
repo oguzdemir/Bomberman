@@ -8,12 +8,19 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 30.4.2016.
+ * Class for the game is over.
+ *
+ * Created by Oğuz Demir on 30.4.2016.
  */
 public class GameOverPanel extends JPanel
 {
     Font customFont;
     JTextField enterName;
+
+    /**
+     * Constructor for the game over panel.
+     * @param result win or lose.
+     */
     public GameOverPanel(int result)
     {
         super();

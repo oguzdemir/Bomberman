@@ -7,7 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by od on 27.4.2016.
+ * Main frame of the game.
+ *
+ * Created by Oğuz Demir on 27.4.2016.
  */
 public class MainFrame extends JFrame
 {
@@ -24,6 +26,10 @@ public class MainFrame extends JFrame
     private GameInfoPanel infop1,infop2;
     private GameInfoHeaderPanel hudPanel;
 
+    /**
+     * Constructor for the main frame.
+     * @param manager GameManager of the game.
+     */
     private MainFrame(GameManager manager)
     {
         super("Bombalamasyon");
@@ -66,6 +72,18 @@ public class MainFrame extends JFrame
         pack();//Size
 
     }
+
+    /**
+     * Updates the screen of the game.
+     * @param map map to draw.
+     * @param bomberMap bombers to draw.
+     * @param info information to draw.
+     * @param currentLevel current level information.
+     * @param remainingTime remaining time information.
+     * @param currentScore1 current score for player1.
+     * @param currentScore2 current score for player2.
+     * @param b two or one player game.
+     */
     public void updateGameView(int[][] map, int[]bomberMap, int[]info,int currentLevel, int remainingTime, int currentScore1, int currentScore2, boolean b )
     {
         gamePanel.update(map,bomberMap);
@@ -79,17 +97,29 @@ public class MainFrame extends JFrame
         hudPanel.updateHUD(remainingTime,currentScore1,currentLevel);
     }
 
+    /**
+     * Register the new high score.
+     * @param name name of the player.
+     */
     public void registerScore(String name)
     {
         gManager.registerScore(name);
     }
+
+    /**
+     * Starts the game.
+     */
     public void startGame()
     {
 
         gamePanel.startGame();
     }
 
-
+    /**
+     * Update the view for current status.
+     * @param status state of the game.
+     * @param result win or lose.
+     */
     public void updateStatusView(int status,int result)
     {
         getContentPane().removeAll();
@@ -147,25 +177,49 @@ public class MainFrame extends JFrame
         getContentPane().revalidate();
         getContentPane().repaint();
     }
+
+    /**
+     * Change the status of the game.
+     * @param status desired state.
+     */
     public void changeStatus(int status)
     {
         gManager.changeGameStatus(status,0);
     }
 
+    /**
+     * Save the changed settings.
+     * @param s string representation of the settings.
+     */
     public void saveSettings(String s)
     {
         gManager.updateSettings(s);
     }
 
-
+    /**
+     * Control the first player.
+     * @param d1 x coordinates.
+     * @param d2 y coordinates.
+     */
     public void controlPlayer(int []d1, int[]d2)
     {
         gManager.controlPlayer(d1,d2);
     }
+
+    /**
+     * Get the instance of the frame.
+     * @return current frame.
+     */
     public static MainFrame getInstance()
     {
         return instance;
     }
+
+    /**
+     * Create new frame with given manager.
+     * @param manager desired manager for the game.
+     * @return the created frame.
+     */
     public static MainFrame getInstance(GameManager manager)
     {
         instance = new MainFrame(manager);

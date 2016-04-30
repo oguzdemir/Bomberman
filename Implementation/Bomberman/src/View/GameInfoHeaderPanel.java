@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 29.4.2016.
+ * Information labels for the gamepanel.
+ *
+ * Created by Oğuz Demir on 29.4.2016.
  */
 
 
@@ -15,6 +17,9 @@ public class GameInfoHeaderPanel extends JPanel
     Font customFont,customFont2;
     JLabel timeLabel,scoreLabel,levelLabel;
 
+    /**
+     * Default constructor for the information panel.
+     */
     public GameInfoHeaderPanel()
     {
         super();
@@ -66,6 +71,13 @@ public class GameInfoHeaderPanel extends JPanel
         setVisible(true);
     }
 
+    /**
+     * Updates the screen with different actions.
+     *
+     * @param time remaining time.
+     * @param score current score.
+     * @param level current level.
+     */
     public void updateHUD(int time, int score, int level)
     {
         timeLabel.setText("Time: " + (time/60)/60 + ":" + (time/60)%60 );
@@ -73,6 +85,14 @@ public class GameInfoHeaderPanel extends JPanel
         levelLabel.setText("Level: " + level);
     }
 
+    /**
+     * Screen update for multiplayer.
+     *
+     * @param time remaining time.
+     * @param score1 player1 score.
+     * @param score2 player2 score.
+     * @param level current level.
+     */
     public void updateHUD(int time, int score1,int score2, int level)
     {
         timeLabel.setText("Time: " + (time/60)/60 + ":" + (time/60)%60 );
