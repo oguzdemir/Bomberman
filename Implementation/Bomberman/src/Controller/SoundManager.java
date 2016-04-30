@@ -1,10 +1,14 @@
 package Controller;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
+import java.nio.file.Paths;
 
 /**
  * Controller class for the sounds of the game.
@@ -16,25 +20,20 @@ public class SoundManager {
 
     public SoundManager ()
     {
-        backgroundMusic = "src/Sources/bg.mp3";
+        backgroundMusic = "http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv";
     }
 
     public void playBackgroundMusic(int volume) {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
+        MediaPlayer mp = new MediaPlayer(new Media(backgroundMusic));
+                    /*AudioInputStream inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(backgroundMusic));
                     Clip clip = AudioSystem.getClip();
-                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(backgroundMusic));
+                    Media
                     clip.open(inputStream);
                     FloatControl gainControl =
                             (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                     gainControl.setValue(volume);
-                    clip.start();
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                }
-            }
-        }).start();
+                    clip.start();*/
+        mp.play();
     }
 
     public void playSound(int situation, int volume)

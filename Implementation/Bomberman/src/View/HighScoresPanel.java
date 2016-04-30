@@ -25,7 +25,7 @@ public class HighScoresPanel extends InfoPanel
         String highScores = gManager.getHighScores();
         String[] scores = highScores.split(" ");
 
-        String[][] data = new String[7][2];
+        String[][] data = new String[10][2];
 
         for (int i = 0; i < scores.length/2; i++)
         {
