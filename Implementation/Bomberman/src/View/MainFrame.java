@@ -13,7 +13,6 @@ public class MainFrame extends JFrame
 {
     private static MainFrame instance = null;
     private GameManager gManager;
-    private GameEngine gEngine;
 
     private MainMenuPanel mainMenuPanel;
     private JPanel gameContainer;

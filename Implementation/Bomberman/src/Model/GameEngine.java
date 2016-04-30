@@ -14,12 +14,12 @@ public class GameEngine
 {
     //Properties
     private GameManager gManager;
+
     private Bomberman[] bomberList;
     private ArrayList<Bomb> bombList;
-    private ArrayList<Wall> wallList;
-    private ArrayList<PowerUp> powerUpList;
     private GameObject[][] objectMap;
     private int[][] objectIntMap;
+
     private int gridSize;
     private boolean gameState;
     private boolean twoPlayers;
@@ -28,6 +28,7 @@ public class GameEngine
 
 
     AiEngine e2,e3,e4;
+
     private static final int GRID_DIMENSION = 40;
     //Constructor
     /**
@@ -42,7 +43,6 @@ public class GameEngine
         diedList = new boolean[4];
 
         bombList = new ArrayList<Bomb>();
-        wallList = new ArrayList<Wall>();
         objectIntMap = new int [n][n];
         objectMap =  new GameObject[n][n];
         gridSize = n;
@@ -75,7 +75,6 @@ public class GameEngine
                 if(map[i][j] != 0)
                 {
                     Wall newWall = new Wall(xCoordinate,yCoordinate, map[i][j]);
-                    wallList.add(newWall);
                     objectMap[i][j] = newWall;
                     objectIntMap[i][j] = map[i][j];
                 }
