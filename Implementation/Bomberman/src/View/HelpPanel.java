@@ -8,12 +8,17 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 28.4.2016.
+ * Help screen for the game.
+ *
+ * Created by Anıl Sert on 28.4.2016.
  */
 public class HelpPanel extends InfoPanel
 {
     private BufferedImage p1,p2,p3,p4,cont1, cont2;
 
+    /**
+     * Default constructor for the help screen.
+     */
     public HelpPanel()
     {
 

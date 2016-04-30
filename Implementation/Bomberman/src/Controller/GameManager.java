@@ -160,6 +160,11 @@ public class GameManager {
         }
     }
 
+    /**
+     * Changes the state of the game.
+     * @param status desired state.
+     * @param result result of the game (lose or win).
+     */
     public void changeGameStatus (int status,int result)
     {
 
@@ -339,6 +344,11 @@ public class GameManager {
         registerHighScores();
     }
 
+    /**
+     * Check the current score is in the top 10 scores.
+     * @param given the score of the player.
+     * @return true if accomplished or false.
+     */
     public boolean checkHighScores (int given)
     {
         String[] scoreList = getHighScores().split(" ");

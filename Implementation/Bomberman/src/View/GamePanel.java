@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * Created by od on 27.4.2016.
+ * Screen for the gameplay.
+ *
+ * Created by Oğuz Demir on 27.4.2016.
  */
 public class GamePanel extends JPanel
 {
@@ -34,7 +36,9 @@ public class GamePanel extends JPanel
     private BufferedImage w1,w2,w3;
     private BufferedImage p1,p2,p3,p4;
 
-
+    /**
+     * Default constructor for the Game screen.
+     */
     public GamePanel()
     {
         setBackground(new Color(255,255,255));
@@ -89,6 +93,10 @@ public class GamePanel extends JPanel
 
 
     }
+
+    /**
+     * Shows the pause screen and stop the game.
+     */
     public void showPause()
     {
         timer.stop();
@@ -104,6 +112,10 @@ public class GamePanel extends JPanel
         repaint();
     }
 
+    /**
+     * Ends the level.
+     * @param result win or lose.
+     */
     public void endLevel(int result)
     {
         timer.stop();
@@ -117,7 +129,10 @@ public class GamePanel extends JPanel
         repaint();
     }
 
-
+    /**
+     * Ends the game.
+     * @param result win or lose.
+     */
     public void gameOver(int result)
     {
         timer.stop();
@@ -133,8 +148,9 @@ public class GamePanel extends JPanel
     }
 
 
-
-
+    /**
+     * Starts the game.
+     */
     public void startGame()
     {
         removeAll();
@@ -144,14 +160,20 @@ public class GamePanel extends JPanel
         timer.start();
     }
 
+    /**
+     * Stop the game and the timer.
+     */
     public void stopGame()
     {
         timer.stop();
     }
 
 
-
-
+    /**
+     * Updates the screen with the given information.
+     * @param map map to draw.
+     * @param data data to draw.
+     */
     public void update(int[][] map, int[]data)
     {
         gameMap = map;
@@ -255,7 +277,7 @@ public class GamePanel extends JPanel
         }
     }
 
-
+    @Override
     public void paintComponent(Graphics g)
     {
 
@@ -345,9 +367,9 @@ public class GamePanel extends JPanel
         }*/
     }
 
-
     private class TimerListener implements ActionListener
     {
+        @Override
         public void actionPerformed(ActionEvent event)
         {
 

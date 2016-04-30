@@ -8,12 +8,17 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 30.4.2016.
+ * Pause screen for the game.
+ *
+ * Created by Oğuz Demir on 30.4.2016.
  */
 public class PausePanel extends JPanel
 {
     Font customFont;
 
+    /**
+     * Default pause screen.
+     */
     public PausePanel()
     {
         super();

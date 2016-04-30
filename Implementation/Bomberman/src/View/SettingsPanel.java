@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by od on 28.4.2016.
+ * Settings screen.
+ *
+ * Created by Anıl Sert on 28.4.2016.
  */
 public class SettingsPanel extends InfoPanel
 {
@@ -16,6 +18,10 @@ public class SettingsPanel extends InfoPanel
     private JCheckBox soundcb;
     private JSlider volumeSlider;
 
+    /**
+     * Constructor for the settings screen.
+     * @param settings string representation of the settings.
+     */
     public SettingsPanel(String settings)
     {
         super("Settings  ");

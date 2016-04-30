@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by od on 29.4.2016.
+ * Powerup information for players.
+ *
+ * Created by Oğuz Demir on 29.4.2016.
  */
 public class GameInfoPanel extends JPanel
 {
@@ -16,6 +18,10 @@ public class GameInfoPanel extends JPanel
     Font customFont,customFont2;
     JLabel livesLabel, limitLabel, magnitudeLabel,speedLimit;
 
+    /**
+     * Constructor for the powerup information panel.
+     * @param t pause button needed or not.
+     */
     public GameInfoPanel(boolean t)
     {
         super();
@@ -95,6 +101,14 @@ public class GameInfoPanel extends JPanel
         setVisible(true);
 
     }
+
+    /**
+     * Update the panel.
+     * @param lives remaining lives.
+     * @param speed current speed.
+     * @param limit current bomb limit.
+     * @param magnitude current bomb magnitude.
+     */
     public void updateHUD(int lives,int speed, int limit, int magnitude)
     {
         speedLimit.setText("        Speed: " + speed);

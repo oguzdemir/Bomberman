@@ -1,7 +1,9 @@
 package Model;
 
 /**
- * Created by od on 28.4.2016.
+ * Engine for the AI behaviour.
+ *
+ * Created by Oğuz Demir on 28.4.2016.
  */
 public class AiEngine
 {
@@ -15,6 +17,12 @@ public class AiEngine
     boolean x;
     int preX,preY;
     int busyWait;
+
+    /**
+     * Constructor for the AI.
+     * @param wayX x direction.
+     * @param wayY y direction.
+     */
     public AiEngine(int wayX, int wayY)
     {
         directions = new int[3];
@@ -25,6 +33,10 @@ public class AiEngine
         busyWait = -1;
     }
 
+    /**
+     * Gets the directions of the AI.
+     * @return directions.
+     */
     public int[] getDirections()
     {
         if (busyWait < 0)
@@ -47,6 +59,11 @@ public class AiEngine
         }
 
     }
+
+    /**
+     * Place bomb for the AI.
+     * @param given bomb placed or not.
+     */
     public void bombPlaced(boolean given)
     {
         if(!given)
@@ -54,6 +71,11 @@ public class AiEngine
             count = 0;
         }
     }
+
+    /**
+     * Controls AI collisions.
+     * @param given collided or not.
+     */
     public void setCollided(boolean given)
     {
         directions[2] = 0;
