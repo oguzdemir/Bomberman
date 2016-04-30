@@ -87,6 +87,7 @@ public class MainFrame extends JFrame
     }
     public void startGame()
     {
+
         gamePanel.startGame();
     }
 
