@@ -128,8 +128,8 @@ public class Bomberman extends GameObject
      */
     public void increaseSpeed ()
     {
-        if(speed < 2)
-            speed+= 0.5;
+        if(speed < 1.4)
+            speed+= 0.1;
     }
 
     public void allZeros()

@@ -249,8 +249,8 @@ public class GameManager {
     public void loadLevel (int levelNo)
     {
 
-        //remainingTime = 7200;
-        remainingTime = 200;
+        remainingTime = 7200;
+
         int[][] gameData = fManager.getGameData(levelNo);
         int size = gameData.length;
        // boolean twoPlayer = getGameState() == 2; // Two player state = 2
